@@ -1,0 +1,65 @@
+﻿<Page
+    x:Class="WindowsApp.Views.RecogResultPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="#f5e4c9">
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".5*"/>
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="1.5*"/>
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Image Grid.Row="1" Grid.Column="1" x:Name="imageRecog"/>
+        <Border Grid.Row="1"  Grid.Column="1" x:Name="borderReferenceForWidth">
+            <Border BorderBrush="Transparent" BorderThickness="1"/>
+        </Border>
+        <TextBlock TextWrapping="Wrap" x:Name="dotReference" Foreground="#f5e4c9" FontSize="{ThemeResource ContentControlFontSize}">.</TextBlock>
+
+
+        <Grid Grid.Row="3" Grid.Column="1" x:Name="ContentRoot">
+            <ScrollViewer>
+                <ListView
+                x:Uid="ViewOfResults" 
+                x:Name="ViewOfResults">
+
+                    <ListView.ItemTemplate >
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Foreground="Black" FontSize="{ThemeResource ContentControlFontSize}" Text="{Binding}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+        </Grid>
+
+        <Button BorderBrush="Transparent" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="1"  VerticalAlignment="Stretch" Click="returnHome_Click">
+            <Viewbox>
+                <SymbolIcon Symbol="Home" Foreground="Black" Height="23" Width="27"/>
+            </Viewbox>
+        </Button>
+    </Grid>
+
+</Page>

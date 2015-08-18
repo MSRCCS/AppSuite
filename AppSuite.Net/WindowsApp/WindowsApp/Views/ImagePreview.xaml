@@ -1,0 +1,54 @@
+﻿<Page
+    x:Class="WindowsApp.Views.ImagePreview"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+
+    <Grid>
+
+
+            <Image x:Name="imagePreview2" Stretch="Uniform"/>
+        <Button Content="Accept" x:Name="acceptButton" HorizontalAlignment="Left" Margin="262,232,0,0" VerticalAlignment="Top" Visibility="Collapsed"/>
+        <Button Content="Reject" x:Name="rejectButton" Margin="86,280,0,0"  HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Collapsed"/>
+                
+        <!--  <Button HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Height="200">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="http://i.imgur.com/C0VPkR0.png"/>
+                </ControlTemplate>
+            </Button.Template></Button>
+        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="50" Height="200" Content="Upload"/>
+-->
+
+
+
+
+
+
+
+    </Grid>
+    
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Accept" Click="accept" RenderTransformOrigin="0.3,0.5"  >
+
+            <AppBarButton.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </AppBarButton.RenderTransform> 
+
+            </AppBarButton>
+            <AppBarButton Icon="Clear" Click="retake" RenderTransformOrigin="0.3,0.5" >
+              <AppBarButton.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </AppBarButton.RenderTransform>
+            </AppBarButton>
+
+        </CommandBar>
+    </Page.BottomAppBar> 
+</Page>
