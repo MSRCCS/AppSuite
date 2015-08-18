@@ -1,0 +1,30 @@
+﻿<Page
+    x:Class="WindowsApp.Views.CameraPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <TextBlock x:Name="Camera" HorizontalAlignment="Left" Margin="30,21,0,0" TextWrapping="Wrap" Text="Camera" VerticalAlignment="Top" FontSize="65" Width="343"/>
+       
+
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Uid="startCameraButton" x:Name="startCameraButton" Label="camera" Icon="Camera" Click="startCapture_Click" />
+            <AppBarButton x:Uid="previewImageBarButton" x:Name="previewImageBarButton" Label="save" Icon="SaveLocal" Click="takePicture_click" />
+            <AppBarButton x:Uid="uploadImageBarButton" x:Name="uploadImageBarButton" Label="upload" Icon="Upload" Click="uploadPicture_click" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Uid="setGateway" x:Name="setGateway" Label="Select Gateway" Click="SelectGateway_Click" />
+                <AppBarButton x:Uid="setProvider" x:Name="setProvider" Label="Select Provider" Click="SelectProvider_Click"/>
+                <AppBarButton x:Uid="setDomain" x:Name="setDomain" Label="Select Domain"  Click="SelectDomain_Click"/>
+                <AppBarButton x:Uid="about" x:Name="about" Label="about VM Hub"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+
+    </Page.BottomAppBar>
+</Page>
