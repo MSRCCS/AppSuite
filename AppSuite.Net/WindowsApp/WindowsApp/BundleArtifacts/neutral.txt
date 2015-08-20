@@ -1,0 +1,3 @@
+MainPackage=E:\Code\TFS.p2plab\OneNet\VHub\ClientSuite\WindowsApp\WindowsApp\bin\Release\VMHubWindowsPhoneApp_1.1.0.2_AnyCPU.appx
+SymbolPackage=E:\Code\TFS.p2plab\OneNet\VHub\ClientSuite\WindowsApp\WindowsApp\AppPackages\VMHubWindowsPhoneApp_1.1.0.2_Test\VMHubWindowsPhoneApp_1.1.0.2_AnyCPU.appxsym
+ResourcePack=E:\Code\TFS.p2plab\OneNet\VHub\ClientSuite\WindowsApp\WindowsApp\bin\Release\VMHubWindowsPhoneApp_1.1.0.2_scale-100.appx

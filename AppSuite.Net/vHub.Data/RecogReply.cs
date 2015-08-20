@@ -50,9 +50,15 @@ namespace vHub.Data
         [System.ComponentModel.DefaultValue(0.0)]
         public double Confidence { get; set; }
 
+        /// <summary>
+        /// TODO: Write Comment
+        /// </summary>
         [DataMember]
         public string Description { get; set; }
 
+        /// <summary>
+        /// TODO: Write Comment
+        /// </summary>
         [DataMember]
         public string PerfInformation { get; set; }
 

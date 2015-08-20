@@ -121,6 +121,10 @@ namespace VMHubClientLibrary
         /// A secret customer key that is used to identify the customer that accesses the gateway
         /// </summary>
         public String CustomerKey { get; set; }
+
+        /// <summary>
+        /// TODO: Write Comment
+        /// </summary>
         public ConcurrentDictionary<String, OneServerMonitoredStatus> GatewayCollection { get; set; }
 
         private Int32 LastRtt { get; set; }
@@ -136,7 +140,13 @@ namespace VMHubClientLibrary
             return "0";
         }
 
-        public static byte[] EncodeToBytes<T>( T value)
+        /// <summary>
+        /// Write Comment
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+       public static byte[] EncodeToBytes<T>( T value)
         {
             using (var stream = new MemoryStream())
             {
@@ -146,30 +156,41 @@ namespace VMHubClientLibrary
             }
         }
 
+        /// <summary>
+        /// Decode a JSON serialized byte array to an object
+        /// </summary>
+        /// <typeparam name="Ty">Type of the objedct</typeparam>
+        /// <param name="buf">Input bytearray </param>
+        /// <returns>Decoded object</returns>
         public static Ty DecodeFromBytes<Ty>(byte[] buf)
         {
-            if ( Object.ReferenceEquals( buf, null ) || buf.Length == 0 )
+            if (Object.ReferenceEquals(buf, null) || buf.Length == 0)
             {
                 return default(Ty);
             }
             else
             {
-            using (var stream = new MemoryStream(buf, 0, buf.Length, false))
-            {
-                DataContractJsonSerializer json = new DataContractJsonSerializer(typeof(Ty));
-                var obj = json.ReadObject(stream); 
-                return (Ty)obj;
-            }
+                using (var stream = new MemoryStream(buf, 0, buf.Length, false))
+                {
+                    DataContractJsonSerializer json = new DataContractJsonSerializer(typeof(Ty));
+                    var obj = json.ReadObject(stream);
+                    return (Ty)obj;
+                }
             }
         }
-
+        /// <summary>
+        /// Instantiate on a GatewayHttpInterface class with gateway, customerID and customerKey
+        /// </summary>
+        /// <param name="gateway">Gateway information</param>
+        /// <param name="customerID">Customer ID</param>
+        /// <param name="customerKey">Customer Key</param>
         public GatewayHttpInterface( String gateway, Guid customerID, String customerKey )
         {
-            /// Gateway should not contains http:
+            // Gateway should not contains http:
             Contract.Assert(gateway.IndexOf(@"http:") < 0);
-            /// Customer key should be at least 10 characters
+            // Customer key should be at least 10 characters
             Contract.Assert(customerKey.Length > 10);
-            /// Customer key should not be zero length
+            // Customer key should not be zero length
             this.CurrentGateway = gateway;
             this.CustomerID = customerID;
             this.CustomerKey = customerKey;
@@ -351,7 +372,12 @@ namespace VMHubClientLibrary
                 return CurrentGatewayList();
             }
         }
-
+        /// <summary>
+        /// TODO: Write Comment
+        /// </summary>
+        /// <param name="providerID"></param>
+        /// <param name="schemaID"></param>
+        /// <returns></returns>
         public async Task<Guid[]> GetAllDomainIDs( Guid providerID, Guid schemaID )
         {
             try
@@ -369,7 +395,10 @@ namespace VMHubClientLibrary
                 return null;
             }
         }
-
+        /// <summary>
+        /// TODO: Write Comment
+        /// </summary>
+        /// <returns></returns>
         public async Task<RecogEngine[]> GetActiveProviders()
         {
             try
@@ -386,6 +415,10 @@ namespace VMHubClientLibrary
             }
         }
 
+        /// <summary>
+        /// TODO: Write Comment
+        /// </summary>
+        /// <returns></returns>
         public async Task<RecogInstance[]> GetWorkingInstances()
         {
             try
@@ -503,7 +536,11 @@ namespace VMHubClientLibrary
             return result; 
         }
 
-
+/// <summary>
+/// TODO: Write Comment
+/// </summary>
+/// <param name="uriString"></param>
+/// <returns></returns>
         public async Task<String> GetWebPage( String uriString )
         {
             using (var httpClient = new HttpClient())

@@ -35,12 +35,17 @@ using WindowsApp.Views;
 
 namespace WindowsApp.Views
 {
+    /// <summary>
+    /// Create page
+    /// </summary>
     public sealed partial class URLPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        public static URLPage Current;
-
+        internal static URLPage Current;
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public URLPage()
         {
             this.InitializeComponent();
@@ -52,7 +57,7 @@ namespace WindowsApp.Views
         }
 
         #region Navigation
-        public NavigationHelper NavigationHelper
+        internal NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
         }
@@ -73,12 +78,19 @@ namespace WindowsApp.Views
         {
             // TODO: Save the unique state of the page here.
         }
+        /// <summary>
+        /// helps with navigation
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
             this.navigationHelper.OnNavigatedTo(e);
         }
-
+        /// <summary>
+        /// helps with navigation
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedFrom(e);

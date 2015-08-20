@@ -49,6 +49,9 @@ using WindowsApp.Common;
 
 namespace WindowsApp.Views
 {
+    /// <summary>
+    /// Create the page
+    /// </summary>
     public sealed partial class SelectProvider : Page
     {
         private NavigationHelper navigationHelper;
@@ -57,12 +60,15 @@ namespace WindowsApp.Views
         private Int32 NumberItemShowed { get; set; }
         private Int32 SelectedIndexValue { get; set; }
         private ConcurrentDictionary<Guid, RecogEngine> ProviderAdded { get; set; }
-        public Boolean hasSaved = false;
+        internal Boolean hasSaved = false;
         /// <summary>
         /// Provider list that is returned by Provider
         /// </summary>
-        public ObservableCollection<RecogEngine> ProviderList { get; set; }
-        public RecogEngine LastProvider { get; set; }
+        internal ObservableCollection<RecogEngine> ProviderList { get; set; }
+        internal RecogEngine LastProvider { get; set; }
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SelectProvider()
         {
             this.navigationHelper = new NavigationHelper(this);
@@ -72,7 +78,7 @@ namespace WindowsApp.Views
         }
 
         #region Navigation
-        public NavigationHelper NavigationHelper
+        internal NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
         }

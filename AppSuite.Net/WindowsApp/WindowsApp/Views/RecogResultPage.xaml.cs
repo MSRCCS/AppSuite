@@ -58,17 +58,20 @@ using Windows.Storage.Streams;
 namespace WindowsApp.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Creates the page
     /// </summary>
     public sealed partial class RecogResultPage : Page
     {
         List<String> resultsList = new List<String>();
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        public int count;
+        private int count;
         private DispatcherTimer timer = new DispatcherTimer();
 
-        public static RecogResultPage Current;
+        internal static RecogResultPage Current;
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public RecogResultPage()
         {
             this.InitializeComponent();
@@ -171,7 +174,7 @@ namespace WindowsApp.Views
             ViewOfResults.ItemsSource = this.resultsList;
             return " ";
         }
-       public void spliceResult(String resultString)
+       private void spliceResult(String resultString)
        {
            int lengthOfWholeString = resultString.Length;
 
@@ -214,7 +217,7 @@ namespace WindowsApp.Views
 
 
        //finds the length of the border in terms of periods
-       public String dotCreater()
+       private String dotCreater()
        {
            int totalDots = (int)(borderReferenceForWidth.ActualWidth / dotReference.ActualWidth) - 5 * (int)(dotReference.ActualWidth);
            String finishedDots = "";
@@ -225,8 +228,8 @@ namespace WindowsApp.Views
 
            }
            return finishedDots;
-       } 
-       public String howManyDots(string resultString)
+       }
+       private String howManyDots(string resultString)
        {
            
            String numbDotsInPic = dotCreater();
@@ -248,7 +251,7 @@ namespace WindowsApp.Views
            }
            return dots;
        }
-       public int howManySpaces(string resultString)
+       private int howManySpaces(string resultString)
        {
            int count = 0;
            foreach (char letter in resultString)
@@ -260,14 +263,14 @@ namespace WindowsApp.Views
            }
            return count;
        }
-       public int findColon(string resultString)
+       private int findColon(string resultString)
        {
            String temp = resultString;
            char colon = ':';
            return temp.IndexOf(colon);
        }
 
-       public int findEnd(string resultString)
+       private int findEnd(string resultString)
        {
            String temp = resultString;
            char semicolon = ';';
@@ -277,20 +280,10 @@ namespace WindowsApp.Views
        } 
      
         #region NavigationHelper registration
-
-        /// <summary>
-        /// The methods provided in this section are simply used to allow
-        /// NavigationHelper to respond to the page's navigation methods.
-        /// <para>
-        /// Page specific logic should be placed in event handlers for the  
-        /// <see cref="NavigationHelper.LoadState"/>
-        /// and <see cref="NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method 
-        /// in addition to page state preserved during an earlier session.
-        /// </para>
-        /// </summary>
-        /// <param name="e">Provides data for navigation methods and event
-        /// handlers that cannot cancel the navigation request.</param>
+/// <summary>
+/// called when the page is navigated to
+/// </summary>
+/// <param name="e"></param>
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
@@ -298,7 +291,7 @@ namespace WindowsApp.Views
             await UpdateResult();
         }
 
-        public void rotateImage()
+        private void rotateImage()
         { 
             RotateTransform rotate = new RotateTransform();
             rotate.Angle = 90;
@@ -307,6 +300,10 @@ namespace WindowsApp.Views
             imageRecog.RenderTransform = rotate;
             
         }
+        /// <summary>
+        /// helps with navigation
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             var currentApp = (App)App.Current;

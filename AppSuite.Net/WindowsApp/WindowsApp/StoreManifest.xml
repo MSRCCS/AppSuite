@@ -3,5 +3,6 @@
     <HardwareRequirements>
       <Requirement Name="ID_REQ_REARCAMERA" />
     </HardwareRequirements>
+    <SDOptOut>true</SDOptOut>
   </ProductFeatures>
 </StoreManifest>

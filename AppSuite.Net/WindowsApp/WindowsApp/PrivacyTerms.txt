@@ -1,0 +1,13 @@
+﻿As a app developer, please respect user privacy, you must agree and follow below requirements:
+
+Privacy policy
+	A prominent link in the app’s menu to a privacy policy
+		You can use this forward link to the Standard Microsoft Research privacy policy: http://go.microsoft.com/fwlink/?LinkID=286687 
+Attribution
+	A splash screen at app startup time that says something like
+		“Powered by Microsoft VM Hub” with a link to the primary landing webpage for the VHub product
+First run notice
+	Let users know that the images they submit could be kept by the service provider for up to 1 year.
+Consent
+	Prominent notice must be put in the app UI so that Users know they must have consent of the people whose images are being processed.
+

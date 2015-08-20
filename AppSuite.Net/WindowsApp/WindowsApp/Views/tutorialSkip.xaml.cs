@@ -18,10 +18,13 @@ using Windows.UI.Xaml.Navigation;
 namespace WindowsApp.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Create page
     /// </summary>
     public sealed partial class tutorialSkip : Page
     {
+        /// <summary>
+        /// Instantiate tutorialSkip page
+        /// </summary>
         public tutorialSkip()
         {
             this.InitializeComponent();
@@ -37,14 +40,14 @@ namespace WindowsApp.Views
             
         }
 
-        private void skipTutorial(object sender, RoutedEventArgs e)
+        internal void skipTutorial(object sender, RoutedEventArgs e)
         {
             var currentApp = (App)App.Current;
             currentApp.saveTutorialInfo();
             Frame.Navigate(typeof(OptionsPage));
         }
 
-        private void runTutorial(object sender, RoutedEventArgs e)
+        internal void runTutorial(object sender, RoutedEventArgs e)
         {
             var currentApp = (App)App.Current;
             currentApp.saveTutorialInfo();

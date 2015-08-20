@@ -54,6 +54,9 @@ using WindowsApp.Views;
 
 namespace WindowsApp.Views
 {
+    /// <summary>
+    /// create the page
+    /// </summary>
     public sealed partial class SelectDomain : Page
     {
         private RecogInstance OldDomain { get; set; }
@@ -61,14 +64,17 @@ namespace WindowsApp.Views
         private Int32 NumberItemShowed { get; set; }
         private Int32 SelectedIndexValue { get; set; }
         private ConcurrentDictionary<Guid, RecogInstance> DomainAdded { get; set; }
-        public ObservableCollection<RecogInstance> DomainList { get; set; }
-        public Guid LastDomainID { get; set; }
-        public RecogInstance LastDomain { get; set; }
-        public Boolean hasSaved = false;
+        private ObservableCollection<RecogInstance> DomainList { get; set; }
+        private Guid LastDomainID { get; set; }
+        private RecogInstance LastDomain { get; set; }
+        private Boolean hasSaved = false;
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
         public static SelectDomain Current;
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SelectDomain()
         {
             this.InitializeComponent();

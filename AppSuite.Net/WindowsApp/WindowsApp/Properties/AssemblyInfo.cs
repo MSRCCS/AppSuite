@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WindowsApp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("VM Hub")]
+[assembly: AssemblyDescription("Visual Media Hub")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WindowsApp")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("VM Hub")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

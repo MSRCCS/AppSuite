@@ -43,19 +43,19 @@ namespace WindowsApp
         private TransitionCollection transitions;
         //public enum ActivationKind {}
         //ActivationKind Kind { get; }
-        public static String DefaultGateway = "vhub.trafficmanager.net"; // "vhub.trafficmanager.net"; 
-        public static Guid CustomerID = Guid.Empty;
-        public static String CustomerKey = "SecretKeyUsed";
-       
-        public interface IActivatedArgs { }
+        internal static String DefaultGateway = "vhub.trafficmanager.net"; // "vhub.trafficmanager.net"; 
+        internal static Guid CustomerID = Guid.Empty;
+        internal static String CustomerKey = "SecretKeyUsed";
 
-        public static GatewayHttpInterface VMHub = new GatewayHttpInterface(App.DefaultGateway, App.CustomerID, App.CustomerKey);
+        internal interface IActivatedArgs { }
+
+        internal static GatewayHttpInterface VMHub = new GatewayHttpInterface(App.DefaultGateway, App.CustomerID, App.CustomerKey);
         /// <summary>
         /// Current gateway to be contacted
         /// </summary>
         public String CurrentGateway { get; set; }
 
-        public String TutorialRun { get; set; }
+        internal String TutorialRun { get; set; }
 
         /// <summary>
         /// Current provider to be used
@@ -92,6 +92,7 @@ namespace WindowsApp
         /// </summary>
         public App()
         {
+            //Initializing the component
             this.InitializeComponent();
 
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait | DisplayOrientations.Landscape | DisplayOrientations.PortraitFlipped | DisplayOrientations.LandscapeFlipped;
@@ -195,7 +196,7 @@ namespace WindowsApp
 
         }
 
-        public void SaveProviderInfo()
+        internal void SaveProviderInfo()
         {
             if (!Object.ReferenceEquals(CurrentProvider, null))
             {
@@ -231,7 +232,7 @@ namespace WindowsApp
 
         }
 
-        public void SaveDomainInfo()
+        internal void SaveDomainInfo()
         {
             if (!Object.ReferenceEquals(CurrentDomain, null))
             {
@@ -241,7 +242,7 @@ namespace WindowsApp
             }
         }
         // Save user information whether the tutorial has been run
-        public void saveTutorialInfo()
+        internal void saveTutorialInfo()
         {
             
             if (!Object.ReferenceEquals(TutorialRun,null))
@@ -251,7 +252,7 @@ namespace WindowsApp
 
             }
         }
-        public void LoadTutorialInfo()
+        internal void LoadTutorialInfo()
         {
             var localSetting = GetStorageSetting();
             
@@ -268,26 +269,7 @@ namespace WindowsApp
         }
         
 
-        /// <summary>
-        /// Invoked when the application is launched normally by the end user.  Other entry points
-        /// will be used when the application is launched to open a specific file, to display
-        /// search results, and so forth.
-        /// </summary>
-        /// <param name="e">Details about the launch request and process.</param>
-    
-
-        /// <summary>
-        /// Restores the content transitions after the app has launched.
-        /// </summary>
-
-        /// <summary>
-        /// Invoked when application execution is being suspended.  Application state is saved
-        /// without knowing whether the application will be terminated or resumed with the contents
-        /// of memory still intact.
-        /// </summary>
-        /// <param name="sender">The source of the suspend request.</param>
-        /// <param name="e">Details about the suspend request.</param>
-
+      
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
