@@ -19,9 +19,9 @@ using WindowsApp.Common;
         IContinuationActivatedEventArgs args = null;
         bool handled = false;
         Guid id = Guid.Empty;
-        public Frame root;
+        internal Frame root=null;
 
-        public ContinuationManager()
+        internal ContinuationManager()
         {
             Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
@@ -30,28 +30,19 @@ using WindowsApp.Common;
         /// Should be called by the main activation handling code in App.xaml.cs
         /// </summary>
         /// <param name="args">The activation args</param>
-        internal void Continue(IContinuationActivatedEventArgs args)
+        public void Continue(IContinuationActivatedEventArgs args)
         {
             Continue(args, Window.Current.Content as Frame);
             
         }
 
-        /// <summary>
-        /// Sets the ContinuationArgs for this instance. Should be called by the main activation
-        /// handling code in App.xaml.cs
-        /// </summary>
-        /// <param name="args">The activation args</param>
-        /// <param name="rootFrame">The frame control that contains the current page</param>
-
+        
         private void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
         {
             root.Navigate(typeof(WindowsApp.Views.OptionsPage));
         }
-        internal void Continue(IContinuationActivatedEventArgs args, Frame rootFrame)
+        public void Continue(IContinuationActivatedEventArgs args, Frame rootFrame)
         {
-            
-            
-
             if (args == null)
                 throw new ArgumentNullException("args");
 

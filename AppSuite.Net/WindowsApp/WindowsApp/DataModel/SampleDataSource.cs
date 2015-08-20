@@ -23,7 +23,7 @@ namespace WindowsApp.Data
     /// </summary>
     public class SampleDataItem
     {
-        public SampleDataItem(String uniqueId, String title, String subtitle, String imagePath, String description, String content)
+        internal SampleDataItem(String uniqueId, String title, String subtitle, String imagePath, String description, String content)
         {
             this.UniqueId = uniqueId;
             this.Title = title;
@@ -33,13 +33,17 @@ namespace WindowsApp.Data
             this.Content = content;
         }
 
-        public string UniqueId { get; private set; }
-        public string Title { get; private set; }
-        public string Subtitle { get; private set; }
-        public string Description { get; private set; }
-        public string ImagePath { get; private set; }
-        public string Content { get; private set; }
+        internal string UniqueId { get; private set; }
+        internal string Title { get; private set; }
+        internal string Subtitle { get; private set; }
+        internal string Description { get; private set; }
+        internal string ImagePath { get; private set; }
+        internal string Content { get; private set; }
 
+        /// <summary>
+        /// TODO: Write Comment
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return this.Title;
@@ -49,9 +53,9 @@ namespace WindowsApp.Data
     /// <summary>
     /// Generic group data model.
     /// </summary>
-    public class SampleDataGroup
+    internal class SampleDataGroup
     {
-        public SampleDataGroup(String uniqueId, String title, String subtitle, String imagePath, String description)
+        internal SampleDataGroup(String uniqueId, String title, String subtitle, String imagePath, String description)
         {
             this.UniqueId = uniqueId;
             this.Title = title;
@@ -61,13 +65,17 @@ namespace WindowsApp.Data
             this.Items = new ObservableCollection<SampleDataItem>();
         }
 
-        public string UniqueId { get; private set; }
-        public string Title { get; private set; }
-        public string Subtitle { get; private set; }
-        public string Description { get; private set; }
-        public string ImagePath { get; private set; }
-        public ObservableCollection<SampleDataItem> Items { get; private set; }
+        internal string UniqueId { get; private set; }
+        internal string Title { get; private set; }
+        internal string Subtitle { get; private set; }
+        internal string Description { get; private set; }
+        internal string ImagePath { get; private set; }
+        internal ObservableCollection<SampleDataItem> Items { get; private set; }
 
+        /// <summary>
+        /// TODO: Write Comment
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return this.Title;
@@ -80,24 +88,24 @@ namespace WindowsApp.Data
     /// SampleDataSource initializes with data read from a static json file included in the 
     /// project.  This provides sample data at both design-time and run-time.
     /// </summary>
-    public sealed class SampleDataSource
+    internal sealed class SampleDataSource
     {
         private static SampleDataSource _sampleDataSource = new SampleDataSource();
 
         private ObservableCollection<SampleDataGroup> _groups = new ObservableCollection<SampleDataGroup>();
-        public ObservableCollection<SampleDataGroup> Groups
+        internal ObservableCollection<SampleDataGroup> Groups
         {
             get { return this._groups; }
         }
 
-        public static async Task<IEnumerable<SampleDataGroup>> GetGroupsAsync()
+        internal static async Task<IEnumerable<SampleDataGroup>> GetGroupsAsync()
         {
             await _sampleDataSource.GetSampleDataAsync();
 
             return _sampleDataSource.Groups;
         }
 
-        public static async Task<SampleDataGroup> GetGroupAsync(string uniqueId)
+        internal static async Task<SampleDataGroup> GetGroupAsync(string uniqueId)
         {
             await _sampleDataSource.GetSampleDataAsync();
             // Simple linear search is acceptable for small data sets
@@ -106,7 +114,7 @@ namespace WindowsApp.Data
             return null;
         }
 
-        public static async Task<SampleDataItem> GetItemAsync(string uniqueId)
+        internal static async Task<SampleDataItem> GetItemAsync(string uniqueId)
         {
             await _sampleDataSource.GetSampleDataAsync();
             // Simple linear search is acceptable for small data sets

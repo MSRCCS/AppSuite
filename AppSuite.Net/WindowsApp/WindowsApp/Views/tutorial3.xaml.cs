@@ -19,12 +19,12 @@ using WindowsApp.Common;
 namespace WindowsApp.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Creates the page
     /// </summary>
     public sealed partial class tutorial3 : Page
     {
         private NavigationHelper navigationHelper;
-        public NavigationHelper NavigationHelper
+        internal NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
         }
@@ -43,6 +43,9 @@ namespace WindowsApp.Views
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
         }
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public tutorial3()
         {
             this.navigationHelper = new NavigationHelper(this);

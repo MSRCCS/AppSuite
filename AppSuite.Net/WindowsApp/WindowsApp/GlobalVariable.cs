@@ -9,8 +9,14 @@ using Windows.Storage.Streams;
 
 namespace WindowsApp
 {
+    /// <summary>
+    /// TODO: Write Comment
+    /// </summary>
     public static class GlobalVariable
     {
+        /// <summary>
+        /// TODO: Write Comment
+        /// </summary>
         public static bool tutorialRun;
 
         //checks for file to run tutorial or not
@@ -48,7 +54,7 @@ namespace WindowsApp
               }
           }
         */
-        public static async Task<StorageFile> CreateFile()
+        internal static async Task<StorageFile> CreateFile()
         {
             StorageFolder localFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
 
@@ -56,7 +62,7 @@ namespace WindowsApp
 
             return File;
         }
-        public static async Task<String> ReadFile(string filename)
+        internal static async Task<String> ReadFile(string filename)
         {
             string contents;
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;

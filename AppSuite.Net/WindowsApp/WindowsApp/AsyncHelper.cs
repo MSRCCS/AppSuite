@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace WindowsApp
 {
+    /// <summary>
+    /// TODO: Write Comment
+    /// </summary>
     public static class AsyncHelpers
     {
+        /// <summary>
+        /// TODO: Write Comment
+        /// </summary>
+        /// <param name="task"></param>
         public static void RunSync(Func<Task> task)
         {
             var oldContext = SynchronizationContext.Current;
@@ -35,6 +42,12 @@ namespace WindowsApp
             SynchronizationContext.SetSynchronizationContext(oldContext);
         }
 
+        /// <summary>
+        /// TODO: Write Comment
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="task"></param>
+        /// <returns></returns>
         public static T RunSync<T>(Func<Task<T>> task)
         {
             var oldContext = SynchronizationContext.Current;

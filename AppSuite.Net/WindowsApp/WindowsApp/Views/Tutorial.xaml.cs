@@ -20,13 +20,13 @@ using VMHubClientLibrary;
 namespace WindowsApp.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Create the page
     /// </summary>
     public sealed partial class Tutorial : Page
 
     {
         private NavigationHelper navigationHelper;
-        public NavigationHelper NavigationHelper
+        internal NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
         }
@@ -45,6 +45,9 @@ namespace WindowsApp.Views
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
         }
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Tutorial()
         {
             this.navigationHelper = new NavigationHelper(this);

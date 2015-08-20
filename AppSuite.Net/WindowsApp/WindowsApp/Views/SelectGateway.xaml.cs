@@ -61,6 +61,9 @@ using WindowsApp.Views;
 
 namespace WindowsApp.Views
 {
+    /// <summary>
+    /// Create the page
+    /// </summary>
     public sealed partial class SelectGateway : Page
     {
         private String OldGateway { get; set; }
@@ -68,13 +71,16 @@ namespace WindowsApp.Views
         private Int32 NumberItemShowed { get; set; }
         private Int32 SelectedIndexValue { get; set; }
         private ConcurrentDictionary<String, OneServerInfo> GatewayAdded { get; set; }
-        public ObservableCollection<OneServerInfo> GatewayList { get; set; }
-        public String LastGateway { get; set; }
-        public Boolean hasSaved = false;
+        internal ObservableCollection<OneServerInfo> GatewayList { get; set; }
+        internal String LastGateway { get; set; }
+        internal Boolean hasSaved = false;
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
-        public static SelectGateway Current;
+        internal static SelectGateway Current;
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SelectGateway()
         {
             this.InitializeComponent();

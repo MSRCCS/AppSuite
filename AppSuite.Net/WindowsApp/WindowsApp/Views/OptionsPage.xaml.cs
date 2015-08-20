@@ -27,14 +27,19 @@ using VMHubClientLibrary;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 namespace WindowsApp.Views
 {
-
+    /// <summary>
+    /// Create the page
+    /// </summary>
     public sealed partial class OptionsPage : Page, IFileOpenPickerContinuable
     {
-        public static OptionsPage Current;
+        internal static OptionsPage Current;
         private readonly NavigationHelper navigationHelper;
         private static DependencyProperty FrameSessionStateKeyProperty =
           DependencyProperty.RegisterAttached("_FrameSessionStateKey", typeof(String), typeof(SuspensionManager), null);
 
+        /// <summary>
+        /// Initializing the Component
+        /// </summary>
         public OptionsPage()
         {
             InitializeComponent();
@@ -54,10 +59,7 @@ namespace WindowsApp.Views
         {
             get { return this.navigationHelper; }
         }
-        /// <summary>
-        /// Gets the view model for this <see cref="Page"/>.
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
+
 
         /// <summary>
         /// Populates the page with content passed during navigation. Any saved state is also
@@ -88,57 +90,17 @@ namespace WindowsApp.Views
         {
             // TODO: Save the unique state of the page here.
         }
-        /// <summary>
-        /// Adds an item to the list when the app bar button is clicked.
-        /// </summary>
-        /* private void AddAppBarButton_Click(object sender, RoutedEventArgs e)
-        {
-        string groupName = this.pivot.SelectedIndex == 0 ? FirstGroupName : SecondGroupName;
-        var group = this.DefaultViewModel[groupName] as SampleDataGroup;
-        var nextItemId = group.Items.Count + 1;
-        var newItem = new SampleDataItem(
-        string.Format(CultureInfo.InvariantCulture, "Group-{0}-Item-{1}", this.pivot.SelectedIndex + 1, nextItemId),
-        string.Format(CultureInfo.CurrentCulture, this.resourceLoader.GetString("NewItemTitle"), nextItemId),
-        string.Empty,
-        string.Empty,
-        this.resourceLoader.GetString("NewItemDescription"),
-        string.Empty);
-        group.Items.Add(newItem);
-        // Scroll the new item into view.
-        var container = this.pivot.ContainerFromIndex(this.pivot.SelectedIndex) as ContentControl;
-        var listView = container.ContentTemplateRoot as ListView;
-        listView.ScrollIntoView(newItem, ScrollIntoViewAlignment.Leading);
-        }
-　
-　
-        /// <summary>
-        /// Loads the content for the second pivot item when it is scrolled into view.
-        /// </summary>
-        private async void SecondPivot_Loaded(object sender, RoutedEventArgs e)
-        {
-        var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-2");
-        this.DefaultViewModel[SecondGroupName] = sampleDataGroup;
-        }*/
-
-        /// <summary>
-        /// The methods provided in this section are simply used to allow
-        /// NavigationHelper to respond to the page's navigation methods.
-        /// <para>
-        /// Page specific logic should be placed in event handlers for the 
-        /// <see cref="NavigationHelper.LoadState"/>
-        /// and <see cref="NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method 
-        /// in addition to page state preserved during an earlier session.
-        /// </para>
-        /// </summary>
-        /// <param name="e">Provides data for navigation methods and eventa
-        /// handlers that cannot cancel the navigation request.</param>
+       
+/// <summary>
+/// called when navigate to the page
+/// </summary>
+/// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
             this.navigationHelper.OnNavigatedTo(e);
         }
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        protected  override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedFrom(e);
         }
@@ -155,7 +117,7 @@ namespace WindowsApp.Views
         {
             Frame.Navigate(typeof(MainPage));
         }
-        private void UploadPhoto(object sender, RoutedEventArgs e)
+       public void UploadPhoto(object sender, RoutedEventArgs e)
         {
             SuspensionManager.RegisterFrame(ScenarioFrame, "ScenarioFrame");
 
@@ -175,6 +137,10 @@ namespace WindowsApp.Views
             ScenarioFrame.Visibility = Visibility.Visible;
 
         }
+        /// <summary>
+        /// space holder
+        /// </summary>
+        /// <param name="args"></param>
         public void ContinueFileOpenPicker(FileOpenPickerContinuationEventArgs args)
         {
 
@@ -234,15 +200,15 @@ namespace WindowsApp.Views
 
         }
         /// <summary>
-        /// Gets a List<> of the active gateways
-        /// checks if the currently selected gateway is in that List<>
+        /// Gets a List of the active gateways
+        /// checks if the currently selected gateway is in that List
         /// </summary>
         /// <returns>
-        /// True if the selected gateway is in the List<> of active gateways
+        /// True if the selected gateway is in the List of active gateways
         /// False otherwise
         /// </returns>
         /// checkProvider() and checkDomain() perform in a similar way
-        public async Task<Boolean> checkGateway()
+        internal async Task<Boolean> checkGateway()
         {
             var activeGateways = await App.VMHub.GetActiveGateways();
             var currentGateway = App.VMHub.CurrentGateway;
@@ -261,7 +227,7 @@ namespace WindowsApp.Views
 
         }
 
-        public async Task<Boolean> checkProvider()
+        internal async Task<Boolean> checkProvider()
         {
             var activeProviders = await App.VMHub.GetActiveProviders();
             var currentProvider = App.VMHub.CurrentProvider;
@@ -276,7 +242,7 @@ namespace WindowsApp.Views
             }
             return false;
         }
-        public async Task<Boolean> checkDomain()
+        internal async Task<Boolean> checkDomain()
         {
             var activeDomains = await App.VMHub.GetWorkingInstances();
             var currentDomain = App.VMHub.CurrentDomain;

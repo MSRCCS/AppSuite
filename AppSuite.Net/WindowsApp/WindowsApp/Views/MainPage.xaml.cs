@@ -57,17 +57,23 @@ using WindowsApp.Views;
 
 namespace WindowsApp
 {
+    /// <summary>
+    /// Creating the page
+    /// </summary>
     public sealed partial class MainPage : Page
     {
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
         private MediaCapture captureManager;
-        public static MainPage Current;
-        public VideoRotation currentRotation;
-        public Boolean takePicture = false;
-        public Boolean inProcessing = false;
+        internal static MainPage Current;
+        internal VideoRotation currentRotation;
+        internal Boolean takePicture = false;
+        internal Boolean inProcessing = false;
 
+        /// <summary>
+        /// Initializing the Component
+        /// </summary>
         public MainPage()
         {
             this.InitializeComponent();
@@ -253,7 +259,7 @@ namespace WindowsApp
 
             PixelDataProvider pixelData = await decoder.GetPixelDataAsync(
                 BitmapPixelFormat.Rgba8,
-                BitmapAlphaMode.Straight,
+                BitmapAlphaMode.Premultiplied,
                 transform,
                 ExifOrientationMode.RespectExifOrientation,
                 ColorManagementMode.DoNotColorManage);
@@ -263,7 +269,7 @@ namespace WindowsApp
 
 
 
-            encoder.SetPixelData(decoder.BitmapPixelFormat, BitmapAlphaMode.Ignore, w, h, 96, 96, pixels);
+            encoder.SetPixelData(BitmapPixelFormat.Rgba8, BitmapAlphaMode.Premultiplied, w, h, 96, 96, pixels);
             await encoder.FlushAsync().AsTask().ConfigureAwait(false);
             mrs.Seek(0);
             byte[] outBytes = new byte[mrs.Size];
@@ -273,7 +279,7 @@ namespace WindowsApp
             currentApp.CurrentImageRecog = ms;
             return outBytes;
         }
- 
+
         #endregion
 
         #region Take Picture Functions
@@ -310,16 +316,15 @@ namespace WindowsApp
 
         }
 
-        /// <summary>
-        /// takes the picture
-        /// called when the <Button> object (takePictureButton) definded in xaml is pressed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+/// <summary>
+/// called when user taps the take picture button
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
         private async void takePicture_click(object sender, RoutedEventArgs e)
         {
             await doTakePicture(sender, e);
-            
+
         }
         async private Task<int> doTakePicture(object sender, RoutedEventArgs e)
         {
@@ -385,6 +390,7 @@ namespace WindowsApp
         {
             await acceptPicture();
         }
+
         private async Task<int> acceptPicture()
         {
             if (!inProcessing)
@@ -407,14 +413,20 @@ namespace WindowsApp
 
                     InMemoryRandomAccessStream mrs = await ConvertTo(ms.ToArray());
                     //rotates the image and sends it through VMHub processing
-                   Byte [] buf = await RotateImage(mrs);
+                    Byte[] buf = await RotateImage(mrs);
                     await this.processRequestAfterRotate(buf);
 
                 }
-                
+
             }
             return 0;
         }
+
+        /// <summary>
+        /// sends the image through VMHub processing
+        /// </summary>
+        /// <param name="rotatedImage"></param>
+        /// <returns></returns>
         private async Task<int> processRequestAfterRotate(byte[] rotatedImage)
         {
             var currentApp = (App)App.Current;
@@ -422,17 +434,25 @@ namespace WindowsApp
             Frame.Navigate(typeof(WindowsApp.Views.RecogResultPage), "Took Picture");
             return 0;
         }
-    
 
+        /// <summary>
+        /// Converts a byte[] to an InMemoryRandomAccessStream
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
         public async Task<InMemoryRandomAccessStream> ConvertTo(byte[] bytes)
-    {
-        InMemoryRandomAccessStream random = new InMemoryRandomAccessStream();
-        await random.WriteAsync(bytes.AsBuffer());
-        random.Seek(0);
-        return random;
-    }
-     
-       
+        {
+            InMemoryRandomAccessStream random = new InMemoryRandomAccessStream();
+            await random.WriteAsync(bytes.AsBuffer());
+            random.Seek(0);
+            return random;
+         }
+
+        /// <summary>
+        /// gets the camera id. Allows the app to set the prefered camera to the back camera
+        /// </summary>
+        /// <param name="desiredCamera"></param>
+        /// <returns></returns>
         private static async Task<DeviceInformation> GetCameraID(Windows.Devices.Enumeration.Panel desiredCamera)
         {
             // get available devices for capturing pictures
@@ -442,8 +462,6 @@ namespace WindowsApp
             if (deviceID != null) return deviceID;
             else throw new Exception(string.Format("Camera of type {0} doesn't exist.", desiredCamera));
         }
-
-
 
         /// <summary>
         /// allows the user to retake the picture

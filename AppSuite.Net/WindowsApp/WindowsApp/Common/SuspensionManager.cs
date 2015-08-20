@@ -255,13 +255,13 @@ namespace WindowsApp.Common
             frameState["Navigation"] = frame.GetNavigationState();
         }
     }
-    public class SuspensionManagerException : Exception
+    internal class SuspensionManagerException : Exception
     {
-        public SuspensionManagerException()
+        internal SuspensionManagerException()
         {
         }
 
-        public SuspensionManagerException(Exception e)
+        internal SuspensionManagerException(Exception e)
             : base("SuspensionManager failed", e)
         {
 

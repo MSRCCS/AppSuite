@@ -51,10 +51,13 @@ namespace WindowsApp.Views
 
     public sealed partial class OptionsProxy : Page, IFileOpenPickerContinuable
     {
-        public static OptionsProxy Current;
+        internal static OptionsProxy Current;
         OptionsPage rootPage = OptionsPage.Current;
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        /// <summary>
+        /// Initializing the Component
+        /// </summary>
         public OptionsProxy()
         {
             this.InitializeComponent();
@@ -67,6 +70,9 @@ namespace WindowsApp.Views
         }
 
         #region Navigation
+        /// <summary>
+        /// call to navigation helper class
+        /// </summary>
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
@@ -102,11 +108,18 @@ namespace WindowsApp.Views
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
         }
+        /// <summary>
+        /// helps with page navigation
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
         }
-
+        /// <summary>
+        /// helps with page navigation
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedFrom(e);
@@ -114,6 +127,10 @@ namespace WindowsApp.Views
         #endregion
 
         #region Choose Library Photo
+        /// <summary>
+        /// resumes the application after choosing a photo from the photo library
+        /// </summary>
+        /// <param name="args"></param>
         public async void ContinueFileOpenPicker(FileOpenPickerContinuationEventArgs args)
         {
             if (args.Files.Count > 0)
@@ -158,7 +175,7 @@ namespace WindowsApp.Views
         }
 
         //adjusts the storage file into a byte array for processing
-        public async Task<byte[]> ReadFile(StorageFile file)
+        internal async Task<byte[]> ReadFile(StorageFile file)
         {
             byte[] fileBytes = null;
             using (IRandomAccessStreamWithContentType stream = await file.OpenReadAsync())
