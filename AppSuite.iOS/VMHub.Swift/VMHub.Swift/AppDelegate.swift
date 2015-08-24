@@ -7,14 +7,18 @@
 //
 
 import UIKit
+import AppLibrary
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var app: GatewayHttpInterface?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        app = GatewayHttpInterface()
+        print( app?.Info() )
         
         /* Disable customization
         window = UIWindow( frame: UIScreen.mainScreen().bounds )

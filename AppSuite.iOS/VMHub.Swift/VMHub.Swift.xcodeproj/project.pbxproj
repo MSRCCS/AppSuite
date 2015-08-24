@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B97014071B8AA0B600294F49 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B97014061B8AA0B600294F49 /* SettingViewController.swift */; };
 		B99A96A91B89416400277E3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99A96A81B89416400277E3F /* AppDelegate.swift */; };
 		B99A96B01B89416400277E3F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B99A96AE1B89416400277E3F /* Main.storyboard */; };
 		B99A96B21B89416400277E3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B99A96B11B89416400277E3F /* Assets.xcassets */; };
@@ -67,6 +68,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		B97014941B8AA71800294F49 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B970148F1B8AA71700294F49 /* AppLibrary.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B97014751B8AA71700294F49;
+			remoteInfo = AppLibrary;
+		};
+		B97014961B8AA71800294F49 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B970148F1B8AA71700294F49 /* AppLibrary.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B970147F1B8AA71700294F49;
+			remoteInfo = AppLibraryTests;
+		};
+		B970149A1B8AD3B300294F49 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B970148F1B8AA71700294F49 /* AppLibrary.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B97014741B8AA71700294F49;
+			remoteInfo = AppLibrary;
+		};
 		B99A96BC1B89416400277E3F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B99A969D1B89416400277E3F /* Project object */;
@@ -77,6 +99,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B97014061B8AA0B600294F49 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingViewController.swift; path = Assets/SettingViewController.swift; sourceTree = "<group>"; };
+		B970148F1B8AA71700294F49 /* AppLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppLibrary.xcodeproj; path = AppLibrary/AppLibrary.xcodeproj; sourceTree = "<group>"; };
 		B99A96A51B89416400277E3F /* VMHub.Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VMHub.Swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B99A96A81B89416400277E3F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B99A96AF1B89416400277E3F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -158,9 +182,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B97014901B8AA71700294F49 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B97014951B8AA71800294F49 /* AppLibrary.framework */,
+				B97014971B8AA71800294F49 /* AppLibraryTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		B99A969C1B89416400277E3F = {
 			isa = PBXGroup;
 			children = (
+				B970148F1B8AA71700294F49 /* AppLibrary.xcodeproj */,
 				B99A96A71B89416400277E3F /* VMHub.Swift */,
 				B99A96BE1B89416400277E3F /* VMHub.SwiftTests */,
 				B99A96A61B89416400277E3F /* Products */,
@@ -183,6 +217,7 @@
 				B99A96CC1B8955FC00277E3F /* Assets */,
 				B99A96A81B89416400277E3F /* AppDelegate.swift */,
 				B99A96CA1B894F6100277E3F /* HomeViewController.swift */,
+				B97014061B8AA0B600294F49 /* SettingViewController.swift */,
 				B99A96AE1B89416400277E3F /* Main.storyboard */,
 				B99A96B11B89416400277E3F /* Assets.xcassets */,
 				B99A96B31B89416400277E3F /* LaunchScreen.storyboard */,
@@ -295,6 +330,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				B970149B1B8AD3B300294F49 /* PBXTargetDependency */,
 			);
 			name = VMHub.Swift;
 			productName = VMHub.Swift;
@@ -348,6 +384,12 @@
 			mainGroup = B99A969C1B89416400277E3F;
 			productRefGroup = B99A96A61B89416400277E3F /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B97014901B8AA71700294F49 /* Products */;
+					ProjectRef = B970148F1B8AA71700294F49 /* AppLibrary.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				B99A96A41B89416400277E3F /* VMHub.Swift */,
@@ -355,6 +397,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B97014951B8AA71800294F49 /* AppLibrary.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppLibrary.framework;
+			remoteRef = B97014941B8AA71800294F49 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B97014971B8AA71800294F49 /* AppLibraryTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AppLibraryTests.xctest;
+			remoteRef = B97014961B8AA71800294F49 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		B99A96A31B89416400277E3F /* Resources */ = {
@@ -434,6 +493,7 @@
 			files = (
 				B99A96A91B89416400277E3F /* AppDelegate.swift in Sources */,
 				B99A96CB1B894F6100277E3F /* HomeViewController.swift in Sources */,
+				B97014071B8AA0B600294F49 /* SettingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +508,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		B970149B1B8AD3B300294F49 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AppLibrary;
+			targetProxy = B970149A1B8AD3B300294F49 /* PBXContainerItemProxy */;
+		};
 		B99A96BD1B89416400277E3F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B99A96A41B89416400277E3F /* VMHub.Swift */;

@@ -18,8 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="biU-u7-uzz">
-                                <rect key="frame" x="520" y="80" width="60" height="60"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="biU-u7-uzz">
+                                <rect key="frame" x="520" y="64" width="60" height="60"/>
                                 <accessibility key="accessibilityConfiguration" hint="Setting Button" identifier="SettingButton" label="Setting ">
                                     <accessibilityTraits key="traits" button="YES" image="YES"/>
                                 </accessibility>
@@ -83,7 +83,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0eb-sU-k7X" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="i2v-Xy-r9s"/>
             </objects>
-            <point key="canvasLocation" x="-508" y="-1563"/>
+            <point key="canvasLocation" x="-584" y="-1578"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="VA2-hD-vTM">
@@ -101,7 +101,45 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iFI-j0-0db" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1304" y="-1535"/>
+            <point key="canvasLocation" x="-1370" y="-1578"/>
+        </scene>
+        <!--Setting View Controller-->
+        <scene sceneID="I6S-aP-Qil">
+            <objects>
+                <tableViewController storyboardIdentifier="SettingViewController" id="Tgv-2V-GQe" customClass="SettingViewController" customModule="VMHub_Swift" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="IhI-5L-JL4">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <tabBar key="tableFooterView" contentMode="scaleToFill" id="5Yg-H3-PYL">
+                            <rect key="frame" x="0.0" y="66" width="600" height="49"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <items>
+                                <tabBarItem title="Gateway" id="gTp-6v-MzJ"/>
+                                <tabBarItem title="Provider" id="l36-lK-vUT"/>
+                                <tabBarItem title="Domain" id="9px-Zf-mTH"/>
+                            </items>
+                        </tabBar>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="T85-nq-PfY">
+                                <rect key="frame" x="0.0" y="22" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="T85-nq-PfY" id="OdG-Yb-29M">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Tgv-2V-GQe" id="JSy-V0-dkU"/>
+                            <outlet property="delegate" destination="Tgv-2V-GQe" id="M00-bH-BbU"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tCP-pj-k6M" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1392" y="-889"/>
         </scene>
     </scenes>
 </document>
