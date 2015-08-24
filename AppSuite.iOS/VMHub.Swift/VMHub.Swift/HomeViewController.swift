@@ -81,8 +81,12 @@ class HomeViewController : UIViewController {
     }
     
     @IBAction func settingsTapped(sender : AnyObject) {
-        let settingViewController = self.storyboard?.instantiateViewControllerWithIdentifier("SettingViewController") as! MasterViewController
-        self.navigationController?.pushViewController(settingViewController, animated: true)
+        let settingViewController = self.storyboard?.instantiateViewControllerWithIdentifier("SettingViewController")
+        if ( settingViewController != nil )
+        {
+            self.navigationController?.pushViewController(settingViewController!, animated: true)
+    
+        }
     }
     
     @IBAction func cameraTapped(sender : AnyObject) {
