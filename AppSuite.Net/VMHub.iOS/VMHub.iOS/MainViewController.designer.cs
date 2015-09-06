@@ -9,14 +9,11 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 
-namespace ClientSuite.iOS
+namespace VMHub.iOS
 {
-	[Register ("ViewController")]
-	partial class ViewController
+	[Register ("MainViewController")]
+	partial class MainViewController
 	{
-		[Outlet]
-		UIKit.UIButton Button { get; set; }
-
 		void ReleaseDesignerOutlets ()
 		{
 		}
