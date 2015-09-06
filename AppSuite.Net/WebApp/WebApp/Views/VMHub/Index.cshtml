@@ -1,0 +1,36 @@
+﻿@model WebDemo.Models.GatewaysViewModel
+
+@{
+    ViewBag.Title = "Microsoft Visual Media Hub";
+}
+
+<br />
+<form action="" method="post" enctype="multipart/form-data">
+    Paste image URL: 
+    <input type="text" name="imageUrl" id="imageUrl", value="@ViewBag.ImageUrl" style="width: 400px" />
+    <br />
+    Or
+    <br/>
+    <input type="file" name="file" id="file", value="@ViewBag."/>
+    <br />
+    Classifier: @Html.DropDownListFor(x => x.SelectedClassifier, Model.Classifiers, "-- Select Classifier --")
+    <br />
+    <br />
+    <input type="submit" />
+</form>
+
+<hr>
+
+@if (ViewBag.ImageData != null)
+{
+    var imageUrl = "data:image/jpeg;base64," + Convert.ToBase64String(ViewBag.ImageData, 0, ViewBag.imageData.Length);
+    <img src="@imageUrl" style="max-height:400px" />
+}
+else if (ViewBag.ImageUrl != null)
+{
+    var imageUrl = ViewBag.ImageUrl;
+    <img src = "@imageUrl" style = "max-height:400px"/>
+}
+
+<h3>Result</h3>
+<p>@ViewBag.ResultString</p>
