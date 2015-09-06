@@ -11,12 +11,9 @@ using UIKit;
 
 namespace ClientSuite.iOS
 {
-	[Register ("ViewController")]
-	partial class ViewController
+	[Register ("SettingViewController")]
+	partial class SettingViewController
 	{
-		[Outlet]
-		UIKit.UIButton Button { get; set; }
-
 		void ReleaseDesignerOutlets ()
 		{
 		}

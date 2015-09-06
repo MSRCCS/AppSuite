@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -47,6 +47,8 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\ARM\Debug\ClientLibrary.XML</DocumentationFile>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <OutputPath>bin\ARM\Release\</OutputPath>
@@ -56,6 +58,7 @@
     <PlatformTarget>ARM</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,13 +79,13 @@
   </Target>
   -->
   <ItemGroup>
-    <ProjectReference Include="..\BasicServiceData\BasicServiceData.csproj">
-      <Project>{66005bbd-1d3a-4c64-bde6-13132edcfb28}</Project>
-      <Name>BasicServiceData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\vHub.Data\vHub.Data.csproj">
-      <Project>{30533b3c-1fe4-4161-95b7-26945778bf71}</Project>
+      <Project>{30533B3C-1FE4-4161-95B7-26945778BF71}</Project>
       <Name>vHub.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BasicServiceData\BasicServiceData.csproj">
+      <Project>{66005BBD-1D3A-4C64-BDE6-13132EDCFB28}</Project>
+      <Name>BasicServiceData</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

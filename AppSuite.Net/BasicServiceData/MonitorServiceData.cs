@@ -27,7 +27,7 @@
         May. 2015
  *******************************************************************/
 
-namespace Prajna.CoreServices.Data
+namespace Prajna.Service.CoreServices.Data
 {
     using System;
     using System.Runtime.Serialization;

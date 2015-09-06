@@ -1,7 +1,7 @@
 ﻿using Foundation;
 using UIKit;
 
-namespace ClientSuite.iOS
+namespace VMHub.iOS
 {
 	// The UIApplicationDelegate for the application. This class is responsible for launching the
 	// User Interface of the application, as well as listening (and optionally responding) to application events from iOS.
@@ -9,10 +9,10 @@ namespace ClientSuite.iOS
 	public class AppDelegate : UIApplicationDelegate
 	{
 		UIWindow window;
-		public static UIStoryboard Storyboard = UIStoryboard.FromName ("MainStoryboard", null);
-		public static UIViewController initialViewController;
-		// class-level declarations
+		MainViewController viewController;
+		UINavigationController nav;
 
+		// class-level declarations
 		public override UIWindow Window {
 			get;
 			set;
@@ -29,10 +29,9 @@ namespace ClientSuite.iOS
 			#endif
 
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
-
-			initialViewController = Storyboard.InstantiateInitialViewController () as UIViewController;
-
-			window.RootViewController = initialViewController;
+			viewController = new MainViewController ();
+			nav = new UINavigationController (viewController);
+			window.RootViewController = nav;
 			window.MakeKeyAndVisible ();
 
 			return true;

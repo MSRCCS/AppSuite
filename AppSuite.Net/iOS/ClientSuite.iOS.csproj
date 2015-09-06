@@ -22,6 +22,9 @@
     <MtouchArch>i386</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchI18n>
+    </MtouchI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -107,10 +110,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClientSuite\ClientSuite.csproj">
-      <Project>{629389AC-7E8F-43C6-BA22-41C4F7AAB0F6}</Project>
-      <Name>ClientSuite</Name>
-    </ProjectReference>
     <ProjectReference Include="..\vHub.Data\vHub.Data.csproj">
       <Project>{30533B3C-1FE4-4161-95B7-26945778BF71}</Project>
       <Name>vHub.Data</Name>
@@ -183,7 +182,7 @@
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
-    <InterfaceDefinition Include="Main.storyboard" />
+    <InterfaceDefinition Include="MainStoryboard.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -197,7 +196,20 @@
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="SettingViewController.cs" />
+    <Compile Include="SettingViewController.designer.cs">
+      <DependentUpon>SettingViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.1.4.2.6359\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.4.2.6359\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
+  <ItemGroup>
+    <Folder Include="Icons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icons\camera.png" />
+    <BundleResource Include="Icons\folder.png" />
+    <BundleResource Include="Icons\search.png" />
+    <BundleResource Include="Icons\settings.png" />
+  </ItemGroup>
 </Project>
