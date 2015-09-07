@@ -11,48 +11,36 @@
 
 import Foundation
 
-/// Manage One Http Get Request
-public class OneGetRequest: NSURLConnectionDelegate {
-    
-    var data = NSMutableData()
-    var request : NSURLRequest?
-    var connection: NSURLConnection?
-    
-    init( url: NSURL, startImmediately: Bool )
+/// Manage Http Request
+public class OneHttpWebRequest {
+    public init( urlInput: NSURL?, reqCompletionHandler: NSString? -> Void )
     {
-        request = NSURLRequest(URL: url)
-        //Sending outbound http request request
-        connection = NSURLConnection(request: request!, delegate: self, startImmediately: startImmediately)
-    }
-    
-    @objc public func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse)
-    {
-        //Will be called when
-        NSLog("didReceiveResponse")
-    }
-    
-    @objc public func connection(connection: NSURLConnection, didReceiveData _data: NSData)
-    {
-        NSLog("didReceiveData")
-        self.data.appendData(_data)
-    }
-    
-    @objc public func connectionDidFinishLoading(connection: NSURLConnection)
-    {
-        NSLog("connectionDidFinishLoading")
-        
-        // let responseStr:NSString = NSString(data:self.data, encoding:NSUTF8StringEncoding)
-        //var responseDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(responseData,options: NSJSONReadingOptions.MutableContainers, error:nil) as NSDictionary
-        //self.createWebViewLoadHTMLString(responseStr);
-    }
-    
-    @objc public func connection(connection: NSURLConnection, didFailWithError error: NSError)
-    {
-        NSLog("didFailWithError=%@",error)
-    }
-    
-    @objc public func isEqual(anObject: AnyObject?) -> Bool {
-        return self === anObject
+        if let url = urlInput
+        {
+        let req = NSURLRequest(URL: url )
+        NSURLConnection.sendAsynchronousRequest( req,
+            queue: NSOperationQueue.mainQueue(),
+            completionHandler:
+            { ( response: NSURLResponse?, data: NSData?, error:NSError? ) -> Void in
+                
+                    if error != nil || data == nil {
+                        print(error) // failed to complete request
+                        reqCompletionHandler(nil)
+                        return
+                    }
+                    
+                    do
+                    {
+                        let go = NSString( data: data!, encoding: NSUTF8StringEncoding )
+                        reqCompletionHandler(go)
+                    }
+        } )
+        }
+        else
+        {
+            print("OneHttpWebRequest: \(urlInput) is not a URL")
+            reqCompletionHandler(nil)
+        }
     }
 }
 
@@ -60,7 +48,10 @@ public class OneGetRequest: NSURLConnectionDelegate {
 public class GatewayHttpInterface {
     
     /// Default Gateway Used
-    private var DefaultGateway = "imhub-cus.cloudapp.net"
+    private var DefaultGateway = "vm-hub.trafficmanager.net"
+    
+    /// Default Address to get the status pag
+    private var DefaultPath = "/web/info"
     
     /// Customer ID to be used
     private var CustomerIDString = "00000000-0000-0000-0000-000000000000"
