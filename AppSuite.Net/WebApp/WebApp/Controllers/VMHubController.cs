@@ -10,6 +10,7 @@ using vHub.Data;
 using System.Threading.Tasks;
 using WebDemo.Models;
 using System.Net;
+using Utility;
 
 namespace WebDemo.Controllers
 {
@@ -81,36 +82,33 @@ namespace WebDemo.Controllers
                 result = "Classifier not selected!";
             else
             {
-                byte[] imageData = null;
+                try
+                {
+                    byte[] imageData = null;
 
-                if (file != null && file.ContentLength > 0)
-                {
-                    using (BinaryReader br = new BinaryReader(file.InputStream))
-                        imageData = br.ReadBytes(file.ContentLength);
-                    ViewBag.ImageData = imageData;
-                }
-                else if (!string.IsNullOrEmpty(imageUrl))
-                {
-                    try
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        using (BinaryReader br = new BinaryReader(file.InputStream))
+                            imageData = br.ReadBytes(file.ContentLength);
+                        imageData = ImageProcessing.ResizeImageInJpeg(imageData, 600, 85L);
+                        // only set ImageData for locally uploaded image for showing in HTML page
+                        // for Web image, the image will be displayed directly from Web Url.
+                        ViewBag.ImageData = imageData;
+                    }
+                    else if (!string.IsNullOrEmpty(imageUrl))
                     {
                         using (System.Net.WebClient webClient = new WebClient())
                             imageData = await webClient.DownloadDataTaskAsync(imageUrl);
+                        imageData = ImageProcessing.ResizeImageInJpeg(imageData, 600, 85L);
                     }
-                    catch (Exception e)
-                    {
-                        result = string.Format("Image cannot be downloaded: {0}", e.Message);
-                    }
-                }
 
-                if (imageData == null)
-                {
-                    if (result == null)
-                        result = "Image upload failed. Please check!";
-                }
-                else
-                {
                     result = await vmHub.ProcessAsyncString(Guid.Empty, Guid.Empty, Guid.Parse(Model.SelectedClassifier), Guid.Empty, Guid.Empty, imageData);
                 }
+                catch (Exception e)
+                {
+                    result = string.Format("Image cannot be uploaded: {0}", e.Message);
+                }
+
             }
 
             ViewBag.ResultString = result;
