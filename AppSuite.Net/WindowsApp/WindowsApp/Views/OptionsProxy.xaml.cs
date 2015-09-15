@@ -66,7 +66,6 @@ namespace WindowsApp.Views
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-            Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
 
         #region Navigation
@@ -86,11 +85,7 @@ namespace WindowsApp.Views
         {
             get { return this.defaultViewModel; }
         }
-        void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
-        {
-            Frame.Navigate(typeof(OptionsPage));
-            e.Handled = true;
-        }
+
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
         /// provided when recreating a page from a prior session.
@@ -151,15 +146,16 @@ namespace WindowsApp.Views
                     stream = new MemoryStream(ms);
                     currentApp.CurrentImageRecog = stream;
                     Byte[] buf = await ResizeImage(stream, 256);
-                    await this.processRequestAfterRotate(buf);
-                    /*   Byte[] buf = await ResizeImage(ms.ToArray(), 256);
-                       var dispatcher = Windows.UI.Core.CoreWindow.GetForCurrentThread().Dispatcher;
-                       await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
-                           {
-                               await this.processRequestAfterRotate(buf);
-                           });
-                   }*/
-
+                    try
+                    {
+                        await this.processRequestAfterRotate(buf);
+                    }
+                    catch (Exception e)
+                    {
+                        string error = e.Message.ToString();
+                        Frame.Navigate(typeof(NetworkError), error);
+                        return;
+                    }
                 }
             }
             else

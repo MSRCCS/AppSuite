@@ -414,7 +414,15 @@ namespace WindowsApp
                     InMemoryRandomAccessStream mrs = await ConvertTo(ms.ToArray());
                     //rotates the image and sends it through VMHub processing
                     Byte[] buf = await RotateImage(mrs);
-                    await this.processRequestAfterRotate(buf);
+                    try
+                    {
+                        await this.processRequestAfterRotate(buf);
+                    }
+                    catch(Exception e)
+                    {
+                        string error = e.Message.ToString();
+                        Frame.Navigate(typeof(NetworkError), error);
+                    }
 
                 }
 

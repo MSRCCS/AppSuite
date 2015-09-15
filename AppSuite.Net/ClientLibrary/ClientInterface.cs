@@ -43,12 +43,78 @@ using System.Runtime.Serialization.Json;
 using System.Diagnostics;
 using Prajna.Service.CoreServices.Data;
 
+
 namespace VMHubClientLibrary
 {
     /// <summary>
+    /// State of a service 
+    /// </summary>
+    public class ServiceState
+    {
+        /// <summary>
+        /// Whether the service is Live at last observation
+        /// </summary>
+        private Boolean Live;
+        /// <summary>
+        /// Last tick when the service state is updated
+        /// </summary>
+        private Int64 Ticks;
+
+        /// <summary>
+        /// If this time has passed, rechecked the liveness of the system 
+        /// </summary>
+        [System.ComponentModel.DefaultValue(30000)]
+        public Int32 CheckForLivenessInMilliseconds { get; set; }
+
+        /// <summary>
+        /// Initialize an instance of the ServiceState. We always initialize the Liveness to false, 
+        /// and the time of check to be one day old. This will trigger rechecking of the state. 
+        /// </summary>
+        public ServiceState( )
+        {
+            Live = false;
+            Ticks = DateTime.UtcNow.Ticks - TimeSpan.TicksPerDay;
+        }
+        /// <summary>
+        /// Set the state of the liveness of service 
+        /// </summary>
+        /// <param name="bLive">Boolean state of the liveness of a service </param>
+        private void SetState( Boolean bLive )
+        {
+            Live = bLive;
+            Ticks = DateTime.UtcNow.Ticks; 
+        }
+
+        public Boolean State
+        {
+            get 
+            {
+                return Live; 
+            }
+            set
+            {
+                SetState(value);
+            }
+        }
+
+        public Boolean NeedsToCheck()
+        {
+            if (Live)
+            {
+                return false;
+            }
+            else
+            {
+                var ticksCur = DateTime.UtcNow.Ticks;
+                return ((ticksCur - Ticks) / TimeSpan.TicksPerMillisecond >= CheckForLivenessInMilliseconds);
+            }
+
+        }
+    }
+
+    /// <summary>
     /// Information about a server 
     /// </summary>
-
     public class OneServerInfo
     {
         /// <summary>
@@ -69,6 +135,13 @@ namespace VMHubClientLibrary
     public class GatewayHttpInterface 
     {
         /// <summary>
+        /// Page to check when validating internet connectivity
+        /// </summary>
+        private static String DefaultCheckPage = "http://bing.com/";
+        private static String DefaultWebInfoPage = "web/Info";
+        private static String CheckToken = "bing.com";
+        private static String StatusOK = "OK";
+        /// <summary>
         /// Key to access local default Gateway
         /// </summary>
         public static String GatewayKey = "DefaultGateway";
@@ -86,7 +159,6 @@ namespace VMHubClientLibrary
         public static String DomainKey = "DefaultDomain";
 
         ///if the tutorial has run
-
         public static String tutorialShown = "No";
         /// <summary>
         /// Gateway being used
@@ -123,7 +195,7 @@ namespace VMHubClientLibrary
         public String CustomerKey { get; set; }
 
         /// <summary>
-        /// TODO: Write Comment
+        /// Current status of the gateway
         /// </summary>
         public ConcurrentDictionary<String, OneServerMonitoredStatus> GatewayCollection { get; set; }
 
@@ -140,12 +212,26 @@ namespace VMHubClientLibrary
             return "0";
         }
 
+        private ServiceState NetworkStatus;
+        private ServiceState GatewayStatus;
+        private ServiceState ProviderStatus;
+        private ServiceState InstanceStatus;
+
         /// <summary>
-        /// Write Comment
+        /// Status Message 
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        public String ErrorMessage;
+        /// <summary>
+        /// Last thrown exception message, if any. 
+        /// </summary>
+        public String ExceptionMessage; 
+
+        /// <summary>
+        /// Encode type T to a bytearray via JSon serializer
+        /// </summary>
+        /// <typeparam name="T">type of value</typeparam>
+        /// <param name="value">object to be serialized</param>
+        /// <returns>output bytearray </returns>
        public static byte[] EncodeToBytes<T>( T value)
         {
             using (var stream = new MemoryStream())
@@ -186,6 +272,11 @@ namespace VMHubClientLibrary
         /// <param name="customerKey">Customer Key</param>
         public GatewayHttpInterface( String gateway, Guid customerID, String customerKey )
         {
+            NetworkStatus = new ServiceState();
+            GatewayStatus = new ServiceState();
+            ProviderStatus = new ServiceState();
+            InstanceStatus = new ServiceState();
+            ErrorMessage = StatusOK;
             // Gateway should not contains http:
             Contract.Assert(gateway.IndexOf(@"http:") < 0);
             // Customer key should be at least 10 characters
@@ -227,7 +318,115 @@ namespace VMHubClientLibrary
             return new Uri(sb.ToString());
         }
 
+        private String ServiceInfoUrl()
+        {
+            var sb = new StringBuilder(1024);
+            sb.Append(@"http://");
+            sb.Append(this.CurrentGateway);
+            sb.Append(@"/");
+            sb.Append(DefaultWebInfoPage);
+            return sb.ToString();
+        }
+
+
+
         /// <summary>
+        /// Retrieve a webpage 
+        /// </summary>
+        /// <param name="uriString">URL</param>
+        /// <returns>content of the URL</returns>
+        public async Task<String> GetWebPage(String uriString)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var theUri = new Uri(uriString);
+                using (HttpResponseMessage response = await httpClient.GetAsync(theUri, HttpCompletionOption.ResponseContentRead))
+                using (HttpContent content = response.Content)
+                {
+                    String result = await content.ReadAsStringAsync();
+                    return result;
+                }
+            }
+        }
+        /// <summary>
+        /// Return internet Connection status. 
+        /// </summary>
+        /// <param name="bForce">If true, the Internet connection state will be updated. Otherwise,the Internet connection state will be checked
+        /// if it hasn't been connected, and sometime has passed from the last state updated. </param>
+        /// <returns> Whether the Internet is connected. </returns>
+        public async Task<Boolean> CheckInternetConnection(Boolean bForce)
+        {
+            if ( bForce || NetworkStatus.NeedsToCheck())
+            {
+                try
+                {
+                    var webResult = await GetWebPage(DefaultCheckPage);
+                    if (String.IsNullOrEmpty(webResult))
+                    {
+                        NetworkStatus.State = false;
+                        ErrorMessage = "Faulty Internet Connection, can't reach any extern site... ";
+                    }
+                    else if (webResult.IndexOf(CheckToken, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        NetworkStatus.State = true;
+                    }
+                    else
+                    {
+                        NetworkStatus.State = false;
+                        ErrorMessage = "Faulty Internet Connection, extern site return incorrection information... ";
+                    }
+                }
+                catch (Exception ex )
+                {
+                    NetworkStatus.State = false;
+                    ExceptionMessage = ex.Message; 
+                    ErrorMessage = "Network is not connected... ";
+                }
+            }
+            return NetworkStatus.State;
+        }
+
+        /// <summary>
+        /// Return Current Gateway Liveness Status. 
+        /// </summary>
+        /// <param name="bForce">If true, the Gateway state will always be updated. Otherwise, the Gateway state will be updated
+        /// if the gateway isn't alive, and sometime has passed from the last state updated. </param>
+        /// <returns> Whether the Gateway is live. </returns>
+        public async Task<Boolean> CheckGatewayStatus(Boolean bForce)
+        {
+            if (bForce || GatewayStatus.NeedsToCheck())
+            {
+                try
+                {
+                    var webInfoPage = ServiceInfoUrl();
+                    var webResult = await GetWebPage(webInfoPage);
+                    if (String.IsNullOrEmpty(webResult))
+                    {
+                        GatewayStatus.State = false;
+                        ErrorMessage = String.Format("Gateway {0} is faulty ... ", this.CurrentGateway); 
+                    }
+                    else 
+                    {
+                        GatewayStatus.State = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    GatewayStatus.State = false;
+                    ExceptionMessage = ex.Message; 
+                    ErrorMessage = String.Format("Gateway {0} is not online ... ", this.CurrentGateway);
+                }
+
+                if (!GatewayStatus.State)
+                {
+                    var bNetwork = await CheckInternetConnection(true);
+                    return false;
+                }
+
+            }
+            return GatewayStatus.State;
+        }
+
         /// Calling a VHub WebGet service, exception needs to be handled by calling function 
         /// </summary>
         /// <param name="serviceString">Service String sent to the gateway</param>
@@ -349,72 +548,150 @@ namespace VMHubClientLibrary
         }
 
         /// <summary>
-        /// Get the current gateways that are in service
+        /// Get a list of gateways that are in service 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of gateways </returns>
         public async Task<List<OneServerInfo>> GetActiveGateways()
         {
             try
             { 
                 var buf = await GetService("GetActiveGateways");
-                var result = DecodeFromBytes<OneServerMonitoredStatus[]>(buf);
-
-                foreach ( var oneResult in result )
+                try
                 {
-                    this.GatewayCollection[oneResult.HostName] = oneResult;
+                    var result = DecodeFromBytes<OneServerMonitoredStatus[]>(buf);
+
+                    foreach (var oneResult in result)
+                    {
+                        this.GatewayCollection[oneResult.HostName] = oneResult;
+                    }
+                    return CurrentGatewayList();
                 }
-                return CurrentGatewayList();
+                catch ( Exception ex )
+                {
+                    ErrorMessage = String.Format("Failed to decode active gateway list from {0}", this.CurrentGateway);
+                    ExceptionMessage = ex.Message;
+                    throw (new HttpRequestException(ErrorMessage));
+                }
             }
-            catch ( Exception e)
+            catch ( Exception ex)
             {
-                var errorString = String.Format("Get Active Gateways fails, current gateway {0}, with exception {1}", this.CurrentGateway, e);
-                Debug.WriteLine(errorString );
-                return CurrentGatewayList();
+                var errorString = String.Format("Current gateway {0} is not functional...", this.CurrentGateway);
+                Debug.WriteLine(errorString);
+                ErrorMessage = String.Format("Failed to retrieve active gateway list from {0}", this.CurrentGateway);
+                ExceptionMessage = ex.Message;
             }
+            // Forcing checking gateway
+            var bGateway = await this.CheckGatewayStatus(true);
+            throw (new HttpRequestException(ErrorMessage));
         }
         /// <summary>
-        /// TODO: Write Comment
+        /// Get all domains for a particular provider and schema 
         /// </summary>
-        /// <param name="providerID"></param>
-        /// <param name="schemaID"></param>
+        /// <param name="providerID">provider </param>
+        /// <param name="schemaID">schema </param>
         /// <returns></returns>
         public async Task<Guid[]> GetAllDomainIDs( Guid providerID, Guid schemaID )
         {
             try
             {
                 var buf = await GetService("GetAllServiceGuids/" + providerID.ToString() + "/" + schemaID.ToString());
-
-                var result = DecodeFromBytes<Guid[]>(buf);
-                return result;
-
+                try
+                { 
+                    var result = DecodeFromBytes<Guid[]>(buf);
+                    return result;
+                }
+                catch( Exception ex)
+                {
+                    ErrorMessage = String.Format("Failed to decode Domain ID from gateway {0}, with schema {1}", this.CurrentGateway, schemaID);
+                    ExceptionMessage = ex.Message;
+                    throw (new HttpRequestException(ErrorMessage));
+                }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                var errorString = String.Format("Get GetAllDomainIDs fails, current gateway {0}, with exception {1}", this.CurrentGateway, e);
+                var errorString = String.Format("Get GetAllDomainIDs fails, current gateway {0}, with exception {1}", this.CurrentGateway, ex);
                 Debug.WriteLine(errorString);
-                return null;
+                ErrorMessage = String.Format("Failed to retrieve domain ID from gateway {0}, schema {1}", this.CurrentGateway, schemaID);
+                ExceptionMessage = ex.Message;
             }
+            // Forcing checking gateway
+            var bGateway = await this.CheckGatewayStatus(true);
+            throw (new HttpRequestException(ErrorMessage));
+        }
+
+        /// <summary>
+        /// Check if a certain provider is live on the gateway
+        /// </summary>
+        /// <param name="providerID">Provider ID to be checked</param>
+        /// <returns>Liveness state </returns>
+        public async Task<Boolean> CheckProviderStatus( Guid providerID )
+        {
+            try
+            {
+                var engineList = await GetActiveProviders();
+                Boolean bExist = false; 
+                foreach( var engine in engineList)
+                {
+                    if (engine.RecogEngineID == providerID)
+                    {
+                        bExist = true;
+                    }
+                }
+                if (!bExist)
+                {
+                    ErrorMessage = String.Format("Provider {0} is not live on gateway {1} ... ", providerID, this.CurrentGateway);
+                }
+                return bExist;
+            }
+            catch (Exception ex)
+            {
+                var errorString = String.Format("CheckProviderStatus fails, current gateway {0}...", this.CurrentGateway);
+                Debug.WriteLine(errorString);
+                ErrorMessage = errorString;
+                ExceptionMessage = ex.Message;
+            }
+            // Forcing checking gateway
+            var bGateway = await this.CheckGatewayStatus(true);
+            return false; 
         }
         /// <summary>
-        /// TODO: Write Comment
+        /// Get the a list of providers registered on the current gateway 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of provider information </returns>
         public async Task<RecogEngine[]> GetActiveProviders()
         {
             try
             {
                 var buf = await GetService("GetActiveProviders" );
-                var result = DecodeFromBytes<RecogEngine[]>(buf);
-                return result; 
+                try
+                {
+                    var result = DecodeFromBytes<RecogEngine[]>(buf);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    var errorString = String.Format("GetActiveProviders fails to decode the provider list from current gateway {0}...", this.CurrentGateway);
+                    Debug.WriteLine(errorString);
+                    ErrorMessage = errorString;
+                    ExceptionMessage = ex.Message;
+                }
+                throw (new HttpRequestException(ErrorMessage));
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                var errorString = String.Format("Get GetActiveProviders fails, current gateway {0}, with exception {1}", this.CurrentGateway, e);
+                var errorString = String.Format("Get GetActiveProviders fails, current gateway {0}, with exception {1}", this.CurrentGateway, ex);
                 Debug.WriteLine(errorString);
-                return null;
+                ErrorMessage = String.Format("Failed to retrieve provider list from current gateway {0}", this.CurrentGateway);
+                ExceptionMessage = ex.Message;
             }
+
+            // Forcing checking gateway
+            var bGateway = await this.CheckGatewayStatus(true);
+            throw (new HttpRequestException(ErrorMessage));
         }
 
+
+        
         /// <summary>
         /// TODO: Write Comment
         /// </summary>
@@ -427,15 +704,71 @@ namespace VMHubClientLibrary
                 if (!Object.ReferenceEquals(CurrentProvider, null))
                     engineName = CurrentProvider.RecogEngineName;
                 var buf = await GetService(@"GetWorkingInstances/" + engineName);
-                var result = DecodeFromBytes<RecogInstance[]>(buf);
-                return result;
+                try
+                {
+                    var result = DecodeFromBytes<RecogInstance[]>(buf);
+                    return result;
+                }
+                catch ( Exception ex)
+                {
+                    var errorString = String.Format("Fails to decode the instance list from current gateway {0}, with engine {1}", this.CurrentGateway, engineName);
+                    Debug.WriteLine(errorString);
+                    ErrorMessage = errorString;
+                    ExceptionMessage = ex.Message;
+                    throw (new HttpRequestException(ErrorMessage));
+                }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                var errorString = String.Format("Get GetActiveProviders fails, current gateway {0}, with exception {1}", this.CurrentGateway, e);
+                var errorString = String.Format("Exception occurs when retrieving the instance list from gateway {0}", this.CurrentGateway);
                 Debug.WriteLine(errorString);
-                return null;
+                ErrorMessage = errorString;
+                ExceptionMessage = ex.Message;
             }
+            var bGateway = await this.CheckGatewayStatus(true);
+            throw (new HttpRequestException(ErrorMessage));
+
+        }
+
+        /// <summary>
+        /// Check if a certain provider is live on the gateway
+        /// </summary>
+        /// <param name="providerID">Provider ID to be checked</param>
+        /// <returns>Liveness state </returns>
+        public async Task<Boolean> CheckInstanceStatus()
+        {
+            try
+            {
+                var domainID = Guid.Empty;
+                if (!Object.ReferenceEquals(CurrentDomain, null))
+                {
+                    domainID = CurrentDomain.ServiceID;
+                }
+                var instanceLists = await GetWorkingInstances();
+                Boolean bExist = false;
+                foreach (var instance in instanceLists)
+                {
+                    if (instance.ServiceID == domainID)
+                    {
+                        bExist = true;
+                    }
+                }
+                if (!bExist)
+                {
+                    ErrorMessage = String.Format("Instance {0} is not live on gateway {1} ... ", domainID, this.CurrentGateway);
+                }
+                return bExist;
+            }
+            catch (Exception ex)
+            {
+                var errorString = String.Format("Fails to retrieve instance list from gateway {0}...", this.CurrentGateway);
+                Debug.WriteLine(errorString);
+                ErrorMessage = errorString;
+                ExceptionMessage = ex.Message;
+            }
+            // Forcing checking gateway
+            var bGateway = await this.CheckGatewayStatus(true);
+            return false;
         }
 
         /// <summary>
@@ -453,17 +786,28 @@ namespace VMHubClientLibrary
             try
             {
                 var returnedInfo = await InvokeService("Process/" + providerID.ToString() + "/" + schemaID.ToString() + domainID.ToString() + distributionID.ToString() + aggregationID.ToString(), buf );
-
-                var result = DecodeFromBytes<RecogReply>(returnedInfo);
-                return result;
+                try
+                { 
+                    var result = DecodeFromBytes<RecogReply>(returnedInfo);
+                    return result;
+                }
+                catch ( Exception )
+                {
+                    var result = new RecogReply();
+                    result.Description = String.Format("{0}B has returned from gateway {1}, but fails to parse the return message", returnedInfo.Length, this.CurrentGateway);
+                    return result; 
+                }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                var errorString = String.Format("Get ClassifyServiceAsync fails, current gateway {0}, with exception {1}", this.CurrentGateway, e);
+                var errorString = String.Format("Fails to process a request from gateway {0} ... ", this.CurrentGateway);
                 Debug.WriteLine(errorString);
-                return null;
+                ErrorMessage = errorString;
+                ExceptionMessage = ex.Message;
             }
-
+            // Forcing checking gateway
+            var bGateway = await this.CheckGatewayStatus(true);
+            throw (new HttpRequestException(ErrorMessage));            
         }
 
         /// <summary>
@@ -536,24 +880,7 @@ namespace VMHubClientLibrary
             return result; 
         }
 
-/// <summary>
-/// TODO: Write Comment
-/// </summary>
-/// <param name="uriString"></param>
-/// <returns></returns>
-        public async Task<String> GetWebPage( String uriString )
-        {
-            using (var httpClient = new HttpClient())
-            {
-                var theUri = new Uri(this.ServiceURI + uriString );
-                using (HttpResponseMessage response = await httpClient.GetAsync(theUri, HttpCompletionOption.ResponseContentRead))
-                using (HttpContent content = response.Content)
-                {
-                    String result = await content.ReadAsStringAsync();
-                    return result; 
-                }
-            }
-        }
+
 
     }
 }

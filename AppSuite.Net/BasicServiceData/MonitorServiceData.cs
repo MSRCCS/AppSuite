@@ -20,9 +20,9 @@
 		Class that defines the monitored status of a gateway server 
 
 	Author:																	
- 		Jin Li, Principal Researcher
+ 		Jin Li, Partner Research Manager
  		Microsoft Research, One Microsoft Way
- 		Email: jinl@microsoft.com, Tel. (425) 703-8451
+ 		Email: jinl at microsoft dot com
     Date:
         May. 2015
  *******************************************************************/

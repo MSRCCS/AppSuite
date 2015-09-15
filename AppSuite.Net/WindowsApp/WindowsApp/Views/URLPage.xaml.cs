@@ -127,7 +127,7 @@ namespace WindowsApp.Views
                 }
                 else
                 {
-                    throw new Exception();
+                    throw new Exception("URL was invalid");
                 }
             }
             catch
@@ -166,13 +166,16 @@ namespace WindowsApp.Views
                     }
 
                     currentApp.CurrentImageRecog = new MemoryStream(buff);
-                    currentApp.CurrentRecogResult = await App.VMHub.ProcessRequest(buff);
+                 
+                        currentApp.CurrentRecogResult = await App.VMHub.ProcessRequest(buff);
 
-                    Frame.Navigate(typeof(WindowsApp.Views.RecogResultPage), "url");
+                        Frame.Navigate(typeof(WindowsApp.Views.RecogResultPage), "url");
+                    
+
                 }
                 catch
                 {
-                    URL.Text = "The URL entered was invalid";
+                    URL.Text = "An image could not be found at this address";
                     errorImage.Visibility = Visibility.Visible;
                     errorMessage.Visibility = Visibility.Visible;
                 }

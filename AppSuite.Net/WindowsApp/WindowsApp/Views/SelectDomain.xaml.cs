@@ -155,33 +155,43 @@ namespace WindowsApp.Views
         # region Domain Operations
         private async void UpdateDomainInfo()
         {
-            var currentApp = (App)App.Current;
-            App.VMHub.CurrentDomain = currentApp.CurrentDomain;
-
-            this.CurrentDomain.Text = "";
-            if (!Object.ReferenceEquals(currentApp.CurrentDomain, null))
+            try
             {
-                this.CurrentDomain.Text = currentApp.CurrentDomain.Name;
-                AddDomain(currentApp.CurrentDomain);
-                this.LastDomain = currentApp.CurrentDomain;
-            }
 
-            {
-                var lst = await App.VMHub.GetWorkingInstances();
-                foreach (var item in lst)
+
+                var currentApp = (App)App.Current;
+                App.VMHub.CurrentDomain = currentApp.CurrentDomain;
+
+                this.CurrentDomain.Text = "";
+                if (!Object.ReferenceEquals(currentApp.CurrentDomain, null))
                 {
-                    AddDomain(item);
+                    this.CurrentDomain.Text = currentApp.CurrentDomain.Name;
+                    AddDomain(currentApp.CurrentDomain);
+                    this.LastDomain = currentApp.CurrentDomain;
                 }
+
+                {
+                    var lst = await App.VMHub.GetWorkingInstances();
+                    foreach (var item in lst)
+                    {
+                        AddDomain(item);
+                    }
+                }
+                var cnt = (double)(this.DomainList.Count);
+                if (String.IsNullOrEmpty(CurrentDomain.Text) && cnt > 0)
+                {
+                    LastDomain = DomainList[0];
+                    LastDomainID = LastDomain.ServiceID;
+                    CurrentDomain.Text = LastDomain.EngineName;
+                    CurrentDomain.Text = LastDomain.Version.ToString();
+                }
+                this.ViewOfDomain.Height = cnt * 90.0;
             }
-            var cnt = (double)(this.DomainList.Count);
-            if (String.IsNullOrEmpty(CurrentDomain.Text) && cnt > 0)
+            catch (Exception e)
             {
-                LastDomain = DomainList[0];
-                LastDomainID = LastDomain.ServiceID;
-                CurrentDomain.Text = LastDomain.EngineName;
-                CurrentDomain.Text = LastDomain.Version.ToString();
+                string error = e.Message.ToString();
+                Frame.Navigate(typeof(NetworkError), error);
             }
-            this.ViewOfDomain.Height = cnt * 90.0;
         }
 
         private void AddDomain(RecogInstance entry)

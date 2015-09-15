@@ -49,7 +49,7 @@
             <Image x:Name="previewImage" Grid.ColumnSpan="3" Grid.RowSpan="4"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
             <Image x:Name="errorImage" Visibility="Collapsed" Grid.Column="1" Grid.Row="1"  Source="../Assets/Icons/grey-camera-icon.png" Opacity="0.5"/>
-            <TextBlock x:Name="errorMessage" Visibility="Collapsed" Grid.Column="1" Grid.Row="2" Text="The URL entered was invalid" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="{StaticResource HubSectionHeaderFontSize}" Opacity="0.5"/>
+            <TextBlock x:Name="errorMessage" Visibility="Collapsed" Grid.Column="1" Grid.Row="2" Text="The image could not be found" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="{StaticResource HubSectionHeaderFontSize}" Opacity="0.5"/>
         </Grid>
    
         <Border Grid.Row="4" Grid.Column="1" Height="40" CornerRadius="10,10,10,10" Background="#490540" >

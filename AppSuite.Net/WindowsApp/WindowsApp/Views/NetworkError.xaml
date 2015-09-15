@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="WindowsApp.Views.NetworkError"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="#F5E4C9">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="12*"/>
+            <ColumnDefinition Width="1*"/>
+            
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Ellipse Grid.Column="0" Fill="#990100" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="70" Height="70"/>
+            <Ellipse Grid.Column="1" Fill="#6b2144" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="70" Width="70"/>
+            <TextBlock Grid.Column="2" TextWrapping="Wrap" Text="P" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="{StaticResource HubHeaderFontSize}"/>
+            <TextBlock Grid.Column="3" TextWrapping="Wrap" Text="S" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="{StaticResource HubHeaderFontSize}"/>
+        </Grid>
+       
+        <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}">Looks like there was a(n):</TextBlock>
+       <!--Load error in this TextBlock along with suggestion on how to rectify the error-->
+        <TextBlock x:Name="Error" x:Uid="Error" Grid.Row="2" Grid.Column="1" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap" ></TextBlock>
+        <Button BorderBrush="Transparent" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom" Click="returnHome_Click">
+            <Viewbox>
+                <SymbolIcon Symbol="Home" Foreground="Black"/>
+            </Viewbox>
+        </Button>
+    </Grid>
+</Page>
