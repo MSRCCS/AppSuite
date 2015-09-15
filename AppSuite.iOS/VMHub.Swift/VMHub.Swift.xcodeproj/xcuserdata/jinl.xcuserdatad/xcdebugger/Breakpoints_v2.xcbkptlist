@@ -6,43 +6,27 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AppLibrary/AppLibrary/AppInterface.swift"
-            timestampString = "462087340.669218"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "23"
-            endingLineNumber = "23"
-            landmarkName = "init(url:startImmediately:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AppLibrary/AppLibrary/AppInterface.swift"
-            timestampString = "462087642.331015"
+            timestampString = "463382860.733993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "15"
-            endingLineNumber = "15"
-            landmarkName = "OneGetRequest"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "OneHttpWebRequest"
             landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "AppLibrary.GatewayHttpInterface.__deallocating_deinit"
+                  symbolName = "AppLibrary.OneHttpWebRequest.__deallocating_deinit"
                   moduleName = "AppLibrary"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jinl/code/github.jinl/AppSuite/AppSuite.iOS/VMHub.Swift/AppLibrary/AppLibrary/AppInterface.swift"
-                  timestampString = "462087642.333786"
+                  timestampString = "463382861.825981"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -53,11 +37,11 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "AppLibrary.GatewayHttpInterface.deinit"
+                  symbolName = "AppLibrary.OneHttpWebRequest.deinit"
                   moduleName = "AppLibrary"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jinl/code/github.jinl/AppSuite/AppSuite.iOS/VMHub.Swift/AppLibrary/AppLibrary/AppInterface.swift"
-                  timestampString = "462087642.333992"
+                  timestampString = "463382861.826257"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -70,17 +54,175 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AppLibrary/AppLibrary/AppInterface.swift"
+            timestampString = "463362126.750521"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "ServiceState"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AppLibrary/AppLibrary/AppInterface.swift"
-            timestampString = "462087967.736732"
+            timestampString = "463373557.453455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "isEqual(_:)"
+            startingLineNumber = "13"
+            endingLineNumber = "13">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AppLibrary.ServiceState.__deallocating_deinit"
+                  moduleName = "AppLibrary"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jinl/code/github.jinl/AppSuite/AppSuite.iOS/VMHub.Swift/AppLibrary/AppLibrary/AppInterface.swift"
+                  timestampString = "463382861.826622"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "12">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AppLibrary.ServiceState.deinit"
+                  moduleName = "AppLibrary"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jinl/code/github.jinl/AppSuite/AppSuite.iOS/VMHub.Swift/AppLibrary/AppLibrary/AppInterface.swift"
+                  timestampString = "463382861.826893"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "10">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AppLibrary/AppLibrary/AppInterface.swift"
+            timestampString = "463382860.733993"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
+            landmarkName = "CheckInternetConnection(_:completionHandler:)"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AppLibrary/AppLibrary/AppInterface.swift"
+            timestampString = "463382414.950245"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "CheckInternetConnection(_:completionHandler:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AppLibrary.GatewayHttpInterface.CheckInternetConnection (AppLibrary.GatewayHttpInterface)(Swift.Bool, completionHandler : (Swift.Bool) -&gt; ()) -&gt; ()"
+                  moduleName = "AppLibrary"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jinl/code/github.jinl/AppSuite/AppSuite.iOS/VMHub.Swift/AppLibrary/AppLibrary/AppInterface.swift"
+                  timestampString = "463382861.827226"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "183"
+                  endingLineNumber = "183"
+                  offsetFromSymbolStart = "449">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AppLibrary.GatewayHttpInterface.(CheckInternetConnection (AppLibrary.GatewayHttpInterface) -&gt; (Swift.Bool, completionHandler : (Swift.Bool) -&gt; ()) -&gt; ()).(closure #1)"
+                  moduleName = "AppLibrary"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jinl/code/github.jinl/AppSuite/AppSuite.iOS/VMHub.Swift/AppLibrary/AppLibrary/AppInterface.swift"
+                  timestampString = "463382861.827495"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "183"
+                  endingLineNumber = "183"
+                  offsetFromSymbolStart = "1119">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VMHub.Swift/AppDelegate.swift"
+            timestampString = "463382832.30892"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "application(_:didFinishLaunchingWithOptions:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VMHub_Swift.AppDelegate.application (VMHub_Swift.AppDelegate)(ObjectiveC.UIApplication, didFinishLaunchingWithOptions : Swift.Optional&lt;Swift.Dictionary&lt;ObjectiveC.NSObject, Swift.AnyObject&gt;&gt;) -&gt; Swift.Bool"
+                  moduleName = "VMHub.Swift"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jinl/code/github.jinl/AppSuite/AppSuite.iOS/VMHub.Swift/VMHub.Swift/AppDelegate.swift"
+                  timestampString = "463382861.748697"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "172">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VMHub_Swift.AppDelegate.(application (VMHub_Swift.AppDelegate) -&gt; (ObjectiveC.UIApplication, didFinishLaunchingWithOptions : Swift.Optional&lt;Swift.Dictionary&lt;ObjectiveC.NSObject, Swift.AnyObject&gt;&gt;) -&gt; Swift.Bool).(closure #1)"
+                  moduleName = "VMHub.Swift"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jinl/code/github.jinl/AppSuite/AppSuite.iOS/VMHub.Swift/VMHub.Swift/AppDelegate.swift"
+                  timestampString = "463382861.748947"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "313">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

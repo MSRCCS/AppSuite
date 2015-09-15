@@ -8,6 +8,9 @@ namespace ClientSuite.iOS
 	[Register ("AppDelegate")]
 	public class AppDelegate : UIApplicationDelegate
 	{
+		UIWindow window;
+		public static UIStoryboard Storyboard = UIStoryboard.FromName ("MainStoryboard", null);
+		public static UIViewController initialViewController;
 		// class-level declarations
 
 		public override UIWindow Window {
@@ -24,6 +27,13 @@ namespace ClientSuite.iOS
 			#if ENABLE_TEST_CLOUD
 			Xamarin.Calabash.Start();
 			#endif
+
+			window = new UIWindow (UIScreen.MainScreen.Bounds);
+
+			initialViewController = Storyboard.InstantiateInitialViewController () as UIViewController;
+
+			window.RootViewController = initialViewController;
+			window.MakeKeyAndVisible ();
 
 			return true;
 		}

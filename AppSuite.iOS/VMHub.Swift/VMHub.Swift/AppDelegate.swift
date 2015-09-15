@@ -14,11 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var app: GatewayHttpInterface?
+    var networkStatus = false
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+
         app = GatewayHttpInterface()
-        print( app?.Info() )
+        app?.CheckInternetConnection(true, completionHandler: { (bConnected) -> Void in
+            print( "Internect connection is \(bConnected)")
+            })
+            
         
         /* Disable customization
         window = UIWindow( frame: UIScreen.mainScreen().bounds )
