@@ -93,6 +93,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PrivacyPolicy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Tutorial.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -157,6 +161,9 @@
     <Compile Include="Views\NetworkError.xaml.cs">
       <DependentUpon>NetworkError.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PrivacyPolicy.xaml.cs">
+      <DependentUpon>PrivacyPolicy.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Tutorial.xaml.cs">
       <DependentUpon>Tutorial.xaml</DependentUpon>
     </Compile>
@@ -203,6 +210,7 @@
     <Content Include="Assets\Icons\folder.png" />
     <Content Include="Assets\Icons\grey-camera-icon.png" />
     <Content Include="Assets\Icons\invalidURL.png" />
+    <Content Include="Assets\Icons\Privacy Policy.png" />
     <Content Include="Assets\Icons\SpeechBubble1.png" />
     <Content Include="Assets\Icons\SpeechBubble2.png" />
     <Content Include="Assets\Icons\SpeechBubble3.png" />
@@ -231,6 +239,7 @@
     <Content Include="Assets\StoreLogo.scale-240.png" />
     <Content Include="Assets\WideLogo.scale-100.png" />
     <Content Include="Assets\WideLogo.scale-240.png" />
+    <Content Include="CodeOfConduct.txt" />
     <Content Include="Common\ReadMe.txt" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="PrivacyTerms.txt" />
@@ -247,7 +256,7 @@
     <Content Include="DataModel\SampleData.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\ServiceLib\BasicServiceData\BasicServiceData.csproj">
+    <ProjectReference Include="..\..\BasicServiceData\BasicServiceData.csproj">
       <Project>{66005bbd-1d3a-4c64-bde6-13132edcfb28}</Project>
       <Name>BasicServiceData</Name>
     </ProjectReference>

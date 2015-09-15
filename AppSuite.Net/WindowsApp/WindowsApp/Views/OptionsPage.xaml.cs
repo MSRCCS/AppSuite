@@ -39,7 +39,7 @@ namespace WindowsApp.Views
           DependencyProperty.RegisterAttached("_FrameSessionStateKey", typeof(String), typeof(SuspensionManager), null);
 
         /// <summary>
-        /// Initializing the Component
+        /// Constructor
         /// </summary>
         public OptionsPage()
         {
@@ -101,6 +101,10 @@ namespace WindowsApp.Views
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
             this.navigationHelper.OnNavigatedTo(e);
         }
+        /// <summary>
+        /// called when app exits the page
+        /// </summary>
+        /// <param name="e"></param>
         protected  override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedFrom(e);
@@ -160,148 +164,56 @@ namespace WindowsApp.Views
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void checkGatewayProviderDomainStatus(object sender, RoutedEventArgs e)
-        {
-           //theoretical working version
-           try
-            {
-                await checkGateway();
-            }
-           catch (HttpRequestException ex)
-            {
-                string error = ex.Message;
-                Frame.Navigate(typeof(NetworkError), error);
-                return;
-            }
-        //working sample
-            /*
-            var checkNetwork = false;
-            if(!checkNetwork)
-            {
-                string exception = "Network error";
-                Frame.Navigate(typeof(NetworkError), exception);
-                return;
-            }
-             * */
-            await renderButtonColor();
-             
+        {          
+            var nReturn = await renderButtonColor();     
         }
-        public async Task renderButtonColor()
+        public async Task<int> renderButtonColor()
         {
-            if (await checkGateway())
+            if(await App.VMHub.CheckGatewayStatus(false))
             {
                 //green
                 gatewayIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 55, 188, 97));
+
+                if(await App.VMHub.CheckProviderStatus())
+                {
+                    //green
+                    providerIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 55, 188, 97));
+
+                    if(await App.VMHub.CheckInstanceStatus())
+                    {
+                        //green
+                        domainIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 55, 188, 97));
+                    }
+                    else
+                    {
+                        //red
+                        domainIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 204, 50, 50));
+                    }
+                }
+                else
+                {
+                    //red
+                    providerIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 204, 50, 50));
+                    //red
+                    domainIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 204, 50, 50));
+                }
+
             }
             else
             {
                 //red
                 gatewayIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 204, 50, 50));
+                 //red
+                    providerIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 204, 50, 50));
+                
+                 //red
+                    domainIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 204, 50, 50));                
             }
-
-            if (await checkProvider())
-            {
-                //green
-                providerIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 55, 188, 97));
-                if (await checkDomain())
-                {
-                    //green
-                    domainIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 55, 188, 97));
-                }
-                else
-                {
-                    //red
-                    domainIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 204, 50, 50));
-                }
-            }
-            else
-            {
-                //red
-                providerIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 204, 50, 50));
-                domainIdentifier.Background = new SolidColorBrush(Color.FromArgb(255, 204, 50, 50));
-            }
-
-
-        }
-        /// <summary>
-        /// Gets a List of the active gateways
-        /// checks if the currently selected gateway is in that List
-        /// </summary>
-        /// <returns>
-        /// True if the selected gateway is in the List of active gateways
-        /// False otherwise
-        /// </returns>
-        /// checkProvider() and checkDomain() perform in a similar way
-        internal async Task<Boolean> checkGateway()
-        {
-                var activeGateways = await App.VMHub.GetActiveGateways();
-                var currentGateway = App.VMHub.CurrentGateway;
-
-                if (activeGateways.Equals(null) || currentGateway.Equals(null))
-                    return false;
-
-                foreach (var item in activeGateways)
-                {
-                    if ((item.HostName).Equals(App.VMHub.CurrentGateway))
-                    {
-                        return true;
-                    }
-                }
-                return false;
-
+            return 0; 
             
+
         }
 
-        internal async Task<Boolean> checkProvider()
-        {
-            try
-            {
-                var activeProviders = await App.VMHub.GetActiveProviders();
-                var currentProvider = App.VMHub.CurrentProvider;
-                if (activeProviders == null || currentProvider == null)
-                    return false;
-                foreach (var provider in activeProviders)
-                {
-                    if ((provider.RecogEngineName).Equals(currentProvider.RecogEngineName))
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        internal async Task<Boolean> checkDomain()
-        {
-            try
-            {
-                var activeDomains = await App.VMHub.GetWorkingInstances();
-                var currentDomain = App.VMHub.CurrentDomain;
-                if (activeDomains == null || currentDomain == null)
-                    return false;
-                foreach (var domain in activeDomains)
-                {
-                    if (domain.Name.Equals(currentDomain.Name))
-                    {
-                        return true;
-                    }
-
-                }
-                return false;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Navigate to the Select Gateway/Provider/Domain pages when the cooresponding option is clicked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void SelectGateway_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(WindowsApp.Views.SelectGateway));

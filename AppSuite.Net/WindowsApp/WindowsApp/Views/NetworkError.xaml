@@ -34,9 +34,9 @@
             <TextBlock Grid.Column="3" TextWrapping="Wrap" Text="S" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="{StaticResource HubHeaderFontSize}"/>
         </Grid>
        
-        <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}">Looks like there was a(n):</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" FontSize="{StaticResource ContentControlFontSize}">Looks like there was a(n):</TextBlock>
        <!--Load error in this TextBlock along with suggestion on how to rectify the error-->
-        <TextBlock x:Name="Error" x:Uid="Error" Grid.Row="2" Grid.Column="1" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap" ></TextBlock>
+        <TextBlock x:Name="Error" x:Uid="Error" Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" FontSize="{StaticResource ContentControlFontSize}"></TextBlock>
         <Button BorderBrush="Transparent" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom" Click="returnHome_Click">
             <Viewbox>
                 <SymbolIcon Symbol="Home" Foreground="Black"/>

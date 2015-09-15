@@ -655,6 +655,21 @@ namespace VMHubClientLibrary
             return false; 
         }
         /// <summary>
+        /// Check if the default provider is live on the gateway
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Boolean> CheckProviderStatus()
+        {
+            if ( Object.ReferenceEquals(this.CurrentProvider, null ))
+            {
+                return false;
+            }
+            else
+            { 
+                return await CheckProviderStatus(this.CurrentProvider.RecogEngineID);
+            }
+        }
+        /// <summary>
         /// Get the a list of providers registered on the current gateway 
         /// </summary>
         /// <returns>A list of provider information </returns>
