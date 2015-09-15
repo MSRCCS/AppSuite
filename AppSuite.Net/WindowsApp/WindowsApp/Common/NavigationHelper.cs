@@ -208,7 +208,7 @@ namespace WindowsApp.Common
         private void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
         {
             
-            if (this.GoBackCommand.CanExecute(null))
+            if (this.GoBackCommand.CanExecute(null) && e.Handled.Equals(false))
             {
                 e.Handled = true;
                 this.GoBackCommand.Execute(null);

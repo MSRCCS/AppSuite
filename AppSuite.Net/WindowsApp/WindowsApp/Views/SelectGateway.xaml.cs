@@ -182,20 +182,23 @@ namespace WindowsApp.Views
 
         private async void UpdateGatewayInfo()
         {
-            var currentApp = (App)App.Current;
-            this.CurrentGateway.Text = currentApp.CurrentGateway;
-            App.VMHub.CurrentGateway = currentApp.CurrentGateway;
-            foreach (var kv in currentApp.GatewayCollection)
+            try
             {
-                AddGateway(kv.Key, kv.Value);
-            }
 
-            if (String.IsNullOrEmpty(this.LastGateway))
-            {
-                this.LastGateway = currentApp.CurrentGateway;
-            }
+                var currentApp = (App)App.Current;
+                this.CurrentGateway.Text = currentApp.CurrentGateway;
+                App.VMHub.CurrentGateway = currentApp.CurrentGateway;
+                foreach (var kv in currentApp.GatewayCollection)
+                {
+                    AddGateway(kv.Key, kv.Value);
+                }
 
-            
+                if (String.IsNullOrEmpty(this.LastGateway))
+                {
+                    this.LastGateway = currentApp.CurrentGateway;
+                }
+
+
                 var lst = await App.VMHub.GetActiveGateways();
 
                 foreach (var item in lst)
@@ -203,9 +206,15 @@ namespace WindowsApp.Views
                     AddGateway(item.HostName, item.HostInfo);
                     currentApp.GatewayCollection.GetOrAdd(item.HostName, item.HostInfo);
                 }
-           
-            var cnt = (double)(this.GatewayList.Count);
-            this.ViewOfGateway.Height = cnt * 60.0;
+
+                var cnt = (double)(this.GatewayList.Count);
+                this.ViewOfGateway.Height = cnt * 60.0;
+            }
+            catch (Exception e)
+            {
+                string error = e.Message.ToString();
+                Frame.Navigate(typeof(NetworkError), error);
+            }
 
         }
 

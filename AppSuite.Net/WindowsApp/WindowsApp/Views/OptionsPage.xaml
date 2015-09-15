@@ -129,7 +129,7 @@
         <Thickness x:Key="HyperlinkButtonBorderThemeThickness">0</Thickness>
         <FontFamily x:Key="PhoneFontFamilySemiLight">Segoe WP SemiLight</FontFamily>
         <Style x:Key="HyperlinkButtonStyle1" TargetType="HyperlinkButton">
-            <Setter Property="Foreground" Value="Blue"/>
+            <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Background" Value="{ThemeResource HyperlinkButtonBackgroundThemeBrush}"/>
             <Setter Property="BorderBrush" Value="{ThemeResource HyperlinkButtonBorderThemeBrush}"/>
             <Setter Property="BorderThickness" Value="{ThemeResource HyperlinkButtonBorderThemeThickness}"/>
@@ -159,11 +159,11 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <Border x:Name="Border" BorderBrush="Blue" BorderThickness="0,0,0,2"  Background="{TemplateBinding Background}">
+                            <Border x:Name="Border" BorderBrush="Black" BorderThickness="0,0,0,2"  Background="{TemplateBinding Background}">
                                 <ContentPresenter x:Name="ContentPresenter" Margin="{StaticResource AppBarBottomBorderThemeThickness}" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                
+
                             </Border>
-                            
+
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -171,8 +171,6 @@
         </Style>
 
     </Page.Resources>
-    <!---->
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -186,16 +184,18 @@
                 <SymbolIcon Symbol="Setting" Foreground="Black" Height="22" Width="28"/>
             </Viewbox>
             <Button.Flyout>
-                <MenuFlyout MenuFlyoutPresenterStyle="{ThemeResource MenuFlyoutStyle}">
+                <MenuFlyout x:Name="menuFlyout" MenuFlyoutPresenterStyle="{ThemeResource MenuFlyoutStyle}">
                       <MenuFlyoutItem x:Name="gatewayIdentifier" HorizontalAlignment ="Center" Background="#E3E3E3" Text="Select Gateway" FontSize="20" Width="470" Style="{ThemeResource MenuFlyoutItemStyle}" Click= "SelectGateway_Click" />
                     <MenuFlyoutItem x:Name="providerIdentifier" Background="#E3E3E3" HorizontalAlignment ="Center" Text="Select Provider" FontSize="20" Width="470" Style="{ThemeResource MenuFlyoutItemStyle}" Click="SelectProvider_Click"/>
                     <MenuFlyoutItem x:Name="domainIdentifier" Background="#E3E3E3" HorizontalAlignment ="Center" Text="Select Domain" Width="470" FontSize="20"  Style= "{ThemeResource MenuFlyoutItemStyle}" Click="SelectDomain_Click" />
                 </MenuFlyout>
             </Button.Flyout>
+
         </Button>
         <HyperlinkButton x:Name="VMHub" Margin="{StaticResource AutoSuggestListViewItemMargin}" Content="Powered by Microsoft VM Hub" HorizontalAlignment="Left" VerticalAlignment="Center" NavigateUri="http://vm-hub.trafficmanager.net/web/info.html" Style="{StaticResource HyperlinkButtonStyle1}"/>
-       <!--  <HyperlinkButton x:Name="PrivacyPolicy" Content="Privacy Policy" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" NavigateUri="http://go.microsoft.com/fwlink/?LinkID=286687On" Style="{StaticResource HyperlinkButtonStyle1}" />-->
-
+       <HyperlinkButton x:Name="PrivacyPolicy" Content="Privacy Policy"  Grid.Row="2" HorizontalAlignment="Right" HorizontalContentAlignment="Left" VerticalAlignment="Center" NavigateUri="http://go.microsoft.com/fwlink/?LinkID=286687" Style="{StaticResource HyperlinkButtonStyle1}" Margin="0,16.333,10,17" Width="98" />
+     <!-- Uncomment this button to test the styling of the error page -->
+      <!--<Button Content="TestErrorPage" Grid.Row="2" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Click="goToErrorPage"/> -->
 <Grid Grid.Row="1" >
        <Grid.RowDefinitions>
                     <RowDefinition Height=" *"/>
@@ -217,8 +217,7 @@
                 <SymbolIcon Symbol="Find" Foreground="#F5E4C9"/>
             </Viewbox>
         </Button>
-       
-
+    
     </Grid>
         <Frame x:Name="ScenarioFrame" Visibility="Collapsed" Grid.Row="0" Background="#F5E4C9" Grid.RowSpan="3" />
     </Grid>

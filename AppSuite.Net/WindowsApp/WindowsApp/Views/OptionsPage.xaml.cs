@@ -22,6 +22,7 @@ using Windows.Graphics.Display;
 using System.Threading.Tasks;
 using Windows.UI;
 using VMHubClientLibrary;
+using System.Net.Http;
 
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
@@ -160,7 +161,29 @@ namespace WindowsApp.Views
         /// <param name="e"></param>
         private async void checkGatewayProviderDomainStatus(object sender, RoutedEventArgs e)
         {
+           //theoretical working version
+           try
+            {
+                await checkGateway();
+            }
+           catch (HttpRequestException ex)
+            {
+                string error = ex.Message;
+                Frame.Navigate(typeof(NetworkError), error);
+                return;
+            }
+        //working sample
+            /*
+            var checkNetwork = false;
+            if(!checkNetwork)
+            {
+                string exception = "Network error";
+                Frame.Navigate(typeof(NetworkError), exception);
+                return;
+            }
+             * */
             await renderButtonColor();
+             
         }
         public async Task renderButtonColor()
         {
@@ -210,53 +233,68 @@ namespace WindowsApp.Views
         /// checkProvider() and checkDomain() perform in a similar way
         internal async Task<Boolean> checkGateway()
         {
-            var activeGateways = await App.VMHub.GetActiveGateways();
-            var currentGateway = App.VMHub.CurrentGateway;
+                var activeGateways = await App.VMHub.GetActiveGateways();
+                var currentGateway = App.VMHub.CurrentGateway;
 
-            if (activeGateways.Equals(null) || currentGateway.Equals(null))
+                if (activeGateways.Equals(null) || currentGateway.Equals(null))
+                    return false;
+
+                foreach (var item in activeGateways)
+                {
+                    if ((item.HostName).Equals(App.VMHub.CurrentGateway))
+                    {
+                        return true;
+                    }
+                }
                 return false;
 
-            foreach (var item in activeGateways)
-            {
-                if ((item.HostName).Equals(App.VMHub.CurrentGateway))
-                {
-                    return true;
-                }
-            }
-            return false;
-
+            
         }
 
         internal async Task<Boolean> checkProvider()
         {
-            var activeProviders = await App.VMHub.GetActiveProviders();
-            var currentProvider = App.VMHub.CurrentProvider;
-            if (activeProviders == null || currentProvider == null)
-                return false;
-            foreach (var provider in activeProviders)
+            try
             {
-                if ((provider.RecogEngineName).Equals(currentProvider.RecogEngineName))
+                var activeProviders = await App.VMHub.GetActiveProviders();
+                var currentProvider = App.VMHub.CurrentProvider;
+                if (activeProviders == null || currentProvider == null)
+                    return false;
+                foreach (var provider in activeProviders)
                 {
-                    return true;
+                    if ((provider.RecogEngineName).Equals(currentProvider.RecogEngineName))
+                    {
+                        return true;
+                    }
                 }
+                return false;
             }
-            return false;
+            catch
+            {
+                return false;
+            }
         }
         internal async Task<Boolean> checkDomain()
         {
-            var activeDomains = await App.VMHub.GetWorkingInstances();
-            var currentDomain = App.VMHub.CurrentDomain;
-            if (activeDomains == null || currentDomain == null)
-                return false;
-            foreach (var domain in activeDomains)
+            try
             {
-                if (domain.Name.Equals(currentDomain.Name))
+                var activeDomains = await App.VMHub.GetWorkingInstances();
+                var currentDomain = App.VMHub.CurrentDomain;
+                if (activeDomains == null || currentDomain == null)
+                    return false;
+                foreach (var domain in activeDomains)
                 {
-                    return true;
-                }
+                    if (domain.Name.Equals(currentDomain.Name))
+                    {
+                        return true;
+                    }
 
+                }
+                return false;
             }
-            return false;
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>

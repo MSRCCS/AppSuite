@@ -79,6 +79,7 @@ namespace WindowsApp.Views
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
             Application.Current.Resuming += new EventHandler<object>(App_Resuming);
+            Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
             Current = this;
         }
         private void App_Resuming(Object sender, Object e)
@@ -102,6 +103,13 @@ namespace WindowsApp.Views
             get { return this.defaultViewModel; }
         }
 
+         
+
+         void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
+        {
+           Frame.Navigate(typeof(OptionsPage));
+           e.Handled = true;
+        }
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
         /// provided when recreating a page from a prior session.

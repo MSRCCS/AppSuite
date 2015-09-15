@@ -143,35 +143,43 @@ namespace WindowsApp.Views
 
         private async void UpdateProviderInfo()
         {
-            var currentApp = (App)App.Current;
-
-            this.CurrentProvider.Text = "";
-            App.VMHub.CurrentProvider = currentApp.CurrentProvider;
-            if (!Object.ReferenceEquals(currentApp.CurrentProvider, null))
+            try
             {
-                this.CurrentProvider.Text = currentApp.CurrentProvider.RecogEngineName;
-                AddProvider(currentApp.CurrentProvider);
-                this.LastProvider = currentApp.CurrentProvider;
-            }
+                var currentApp = (App)App.Current;
 
-            {
-                var lst = await App.VMHub.GetActiveProviders();
-                foreach (var item in lst)
+                this.CurrentProvider.Text = "";
+                App.VMHub.CurrentProvider = currentApp.CurrentProvider;
+                if (!Object.ReferenceEquals(currentApp.CurrentProvider, null))
                 {
-                    if (lst == null)
-                    {
-                        return;
-                    }
-                    AddProvider(item);
+                    this.CurrentProvider.Text = currentApp.CurrentProvider.RecogEngineName;
+                    AddProvider(currentApp.CurrentProvider);
+                    this.LastProvider = currentApp.CurrentProvider;
                 }
+
+                {
+                    var lst = await App.VMHub.GetActiveProviders();
+                    foreach (var item in lst)
+                    {
+                        if (lst == null)
+                        {
+                            return;
+                        }
+                        AddProvider(item);
+                    }
+                }
+                var cnt = (double)(this.ProviderList.Count);
+                if (String.IsNullOrEmpty(CurrentProvider.Text) && cnt > 0)
+                {
+                    LastProvider = ProviderList[0];
+                    CurrentProvider.Text = LastProvider.RecogEngineName;
+                }
+                this.ViewOfProvider.Height = cnt * 140.0;
             }
-            var cnt = (double)(this.ProviderList.Count);
-            if (String.IsNullOrEmpty(CurrentProvider.Text) && cnt > 0)
+            catch (Exception e)
             {
-                LastProvider = ProviderList[0];
-                CurrentProvider.Text = LastProvider.RecogEngineName;
+                string error = e.Message.ToString();
+                Frame.Navigate(typeof(NetworkError), error);
             }
-            this.ViewOfProvider.Height = cnt * 140.0;
 
         }
 
