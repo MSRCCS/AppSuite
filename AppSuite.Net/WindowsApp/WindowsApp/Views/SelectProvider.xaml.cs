@@ -42,7 +42,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Graphics.Display;
-using vHub.Data;
+using VMHub.Data;
 using VMHubClientLibrary;
 using System.Threading.Tasks;
 using WindowsApp.Common;

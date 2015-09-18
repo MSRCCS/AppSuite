@@ -25,7 +25,7 @@ using Windows.Storage.Streams;
 using System.Threading.Tasks;
 using System.Threading;
 using Windows.Phone.UI.Input;
-using vHub.Data;
+using VMHub.Data;
 using VMHubClientLibrary;
 using WindowsApp.Views;
 

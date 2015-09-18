@@ -45,7 +45,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Graphics.Display;
 using WindowsApp.Common;
 using WindowsApp.Data;
-using vHub.Data;
+using VMHub.Data;
 using VMHubClientLibrary;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;

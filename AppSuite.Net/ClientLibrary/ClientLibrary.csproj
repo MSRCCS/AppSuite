@@ -83,9 +83,9 @@
       <Project>{66005bbd-1d3a-4c64-bde6-13132edcfb28}</Project>
       <Name>BasicServiceData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\vHub.Data\vHub.Data.csproj">
+    <ProjectReference Include="..\vHub.Data\VMHub.Data.csproj">
       <Project>{30533B3C-1FE4-4161-95B7-26945778BF71}</Project>
-      <Name>vHub.Data</Name>
+      <Name>VMHub.Data</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

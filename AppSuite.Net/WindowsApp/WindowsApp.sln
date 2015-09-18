@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMHubWindowsPhoneApp", "Win
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientLibrary", "..\ClientLibrary\ClientLibrary.csproj", "{C46327B8-2C81-4C5D-926F-DBDDC75225AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vHub.Data", "..\vHub.Data\vHub.Data.csproj", "{30533B3C-1FE4-4161-95B7-26945778BF71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMHub.Data", "..\vHub.Data\VMHub.Data.csproj", "{30533B3C-1FE4-4161-95B7-26945778BF71}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicServiceData", "..\BasicServiceData\BasicServiceData.csproj", "{66005BBD-1D3A-4C64-BDE6-13132EDCFB28}"
 EndProject
