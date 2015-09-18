@@ -44,11 +44,6 @@ using WindowsApp.Views;
 
 namespace WindowsApp.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    /// public static OptionsProxy Current;
-
     public sealed partial class OptionsProxy : Page, IFileOpenPickerContinuable
     {
         internal static OptionsProxy Current;
@@ -56,7 +51,7 @@ namespace WindowsApp.Views
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         /// <summary>
-        /// Initializing the Component
+        /// Constructor
         /// </summary>
         public OptionsProxy()
         {
@@ -128,6 +123,7 @@ namespace WindowsApp.Views
         /// <param name="args"></param>
         public async void ContinueFileOpenPicker(FileOpenPickerContinuationEventArgs args)
         {
+            string errorMessage = "";
             if (args.Files.Count > 0)
             {
                 MemoryStream stream;
@@ -149,24 +145,42 @@ namespace WindowsApp.Views
                     try
                     {
                         await this.processRequestAfterRotate(buf);
-                    }
-                    catch (Exception e)
-                    {
-                        string error = e.Message.ToString();
-                        Frame.Navigate(typeof(NetworkError), error);
                         return;
                     }
+                    catch (Exception ex)
+                    {
+                        errorMessage = ex.Message;
+                    }
+
+                    NetworkError.SetError(errorMessage);
+                    Frame.Navigate(typeof(NetworkError));
                 }
+
             }
             else
+            {
                 Frame.Navigate(typeof(OptionsPage));
+
+            }
         }
 
         private async Task<int> processRequestAfterRotate(byte[] buf)
         {
-            var currentApp = (App)App.Current;
-            currentApp.CurrentRecogResult = await App.VMHub.ProcessRequest(buf);
-            Frame.Navigate(typeof(WindowsApp.Views.RecogResultPage), "Upload Picture");
+            string errorMessage = "";
+            try
+            {
+                var currentApp = (App)App.Current;
+                currentApp.CurrentRecogResult = await App.VMHub.ProcessRequest(buf);
+                Frame.Navigate(typeof(WindowsApp.Views.RecogResultPage), "Upload Picture");
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+            }
+
+            NetworkError.SetError(errorMessage);
+            Frame.Navigate(typeof(NetworkError));
             return 0;
         }
 
@@ -186,42 +200,52 @@ namespace WindowsApp.Views
             return fileBytes;
         }
 
-           async private Task<byte[]> ResizeImage(MemoryStream ms, uint maxImageSize)
+        /// <summary>
+        /// resizes the image so it can go through VMHub processing
+        /// </summary>
+        /// <param name="ms"></param>
+        /// <param name="maxImageSize"></param>
+        /// <returns></returns>
+        async private Task<byte[]> ResizeImage(MemoryStream ms, uint maxImageSize)
         {
             MemoryStream temp = ms;
             IRandomAccessStream ras = temp.AsRandomAccessStream();
-                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(ras).AsTask().ConfigureAwait(false);
-                uint w = decoder.PixelWidth, h = decoder.PixelHeight;
-                if (w > maxImageSize || h > maxImageSize)
+            BitmapDecoder decoder = await BitmapDecoder.CreateAsync(ras).AsTask().ConfigureAwait(false);
+
+            uint w = decoder.PixelWidth, h = decoder.PixelHeight;
+            if (w > maxImageSize || h > maxImageSize)
+            {
+                if (w > h)
                 {
-                    if (w > h)
-                    {
-                        w = maxImageSize;
-                        h = decoder.PixelHeight * maxImageSize / decoder.PixelWidth;
-                    }
-                    else
-                    {
-                        w = decoder.PixelWidth * maxImageSize / decoder.PixelHeight;
-                        h = maxImageSize;
-                    }
+                    w = maxImageSize;
+                    h = decoder.PixelHeight * maxImageSize / decoder.PixelWidth;
                 }
-                BitmapTransform transform = new BitmapTransform() { ScaledHeight = h, ScaledWidth = w };
-                PixelDataProvider pixelData = await decoder.GetPixelDataAsync(
-                    BitmapPixelFormat.Rgba8,
-                    BitmapAlphaMode.Premultiplied,
-                    transform,
-                    ExifOrientationMode.RespectExifOrientation,
-                    ColorManagementMode.DoNotColorManage);
-                byte [] pixels = pixelData.DetachPixelData();
-                InMemoryRandomAccessStream encoded = new InMemoryRandomAccessStream();
-                BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, encoded);
-                encoder.SetPixelData(BitmapPixelFormat.Rgba8, BitmapAlphaMode.Premultiplied, w, h, 96, 96, pixels);
-                await encoder.FlushAsync().AsTask().ConfigureAwait(false);
-                encoded.Seek(0);
-                byte[] outBytes = new byte[encoded.Size];
-                await encoded.AsStream().ReadAsync(outBytes, 0, outBytes.Length);
-                return outBytes;         
+                else
+                {
+                    w = decoder.PixelWidth * maxImageSize / decoder.PixelHeight;
+                    h = maxImageSize;
+                }
+            }
+            BitmapTransform transform = new BitmapTransform() { ScaledHeight = h, ScaledWidth = w };
+            PixelDataProvider pixelData = await decoder.GetPixelDataAsync(
+                BitmapPixelFormat.Rgba8,
+                BitmapAlphaMode.Premultiplied,
+                transform,
+                ExifOrientationMode.RespectExifOrientation,
+                ColorManagementMode.DoNotColorManage);
+
+            byte[] pixels = pixelData.DetachPixelData();
+
+            InMemoryRandomAccessStream encoded = new InMemoryRandomAccessStream();
+            BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, encoded);
+            encoder.SetPixelData(BitmapPixelFormat.Rgba8, BitmapAlphaMode.Premultiplied, w, h, 96, 96, pixels);
+            await encoder.FlushAsync().AsTask().ConfigureAwait(false);
+            encoded.Seek(0);
+            byte[] outBytes = new byte[encoded.Size];
+            await encoded.AsStream().ReadAsync(outBytes, 0, outBytes.Length);
+            return outBytes;
         }
+
         #endregion
     }
 }

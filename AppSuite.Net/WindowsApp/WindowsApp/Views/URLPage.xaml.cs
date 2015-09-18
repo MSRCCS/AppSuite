@@ -79,7 +79,7 @@ namespace WindowsApp.Views
             // TODO: Save the unique state of the page here.
         }
         /// <summary>
-        /// helps with navigation
+        /// called when the page is navigated to
         /// </summary>
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -88,7 +88,7 @@ namespace WindowsApp.Views
             this.navigationHelper.OnNavigatedTo(e);
         }
         /// <summary>
-        /// helps with navigation
+        /// called when the app leaves the page
         /// </summary>
         /// <param name="e"></param>
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -122,7 +122,7 @@ namespace WindowsApp.Views
                     Uri uri = new Uri(input);
                     BitmapImage bmpImage = new BitmapImage(uri);
                     errorImage.Visibility = Visibility.Collapsed;
-                    errorMessage.Visibility = Visibility.Collapsed;
+                    errorText.Visibility = Visibility.Collapsed;
                     previewImage.Source = bmpImage;
                 }
                 else
@@ -134,15 +134,21 @@ namespace WindowsApp.Views
             {
                 URL.Text = "The URL entered was invalid";
                 errorImage.Visibility = Visibility.Visible;
-                errorMessage.Visibility = Visibility.Visible;
+                errorText.Visibility = Visibility.Visible;
             }
 
         }
+        
         /// <summary>
         /// Gets the image from the uri and sends the image through processing
         /// </summary>
-        private async void getImageFromURL(object sender, RoutedEventArgs e)
+        private async void getImageFromURL_click(object sender, RoutedEventArgs e)
         {
+            var result = await getImageFromURL();
+        }
+        private async Task<int> getImageFromURL()
+        {
+            string errorMessage = "";
             if (string.IsNullOrEmpty(URL.Text) || URL.Text.Equals("Please Enter a URL"))
             {
                 URL.Text = "Please Enter a URL";
@@ -166,20 +172,31 @@ namespace WindowsApp.Views
                     }
 
                     currentApp.CurrentImageRecog = new MemoryStream(buff);
-                 
+                    try
+                    {
                         currentApp.CurrentRecogResult = await App.VMHub.ProcessRequest(buff);
 
                         Frame.Navigate(typeof(WindowsApp.Views.RecogResultPage), "url");
-                    
+                        return 0;
+                    }
+
+                    catch (Exception ex)
+                    {
+                        errorMessage = ex.Message;
+                    }
+
+                    NetworkError.SetError(errorMessage);
+                    Frame.Navigate(typeof(NetworkError));
 
                 }
                 catch
                 {
                     URL.Text = "An image could not be found at this address";
                     errorImage.Visibility = Visibility.Visible;
-                    errorMessage.Visibility = Visibility.Visible;
+                    errorText.Visibility = Visibility.Visible;
                 }
             }
+            return 0;
         }
 
 

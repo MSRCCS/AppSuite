@@ -98,7 +98,7 @@ namespace WindowsApp.Views
         {
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             ProviderList = new ObservableCollection<RecogEngine>();
             ProviderAdded = new ConcurrentDictionary<Guid, RecogEngine>();
@@ -113,7 +113,7 @@ namespace WindowsApp.Views
             MinItemShowed = 0;
             var currentApp = (App)App.Current;
             OldProvider = currentApp.CurrentProvider;
-            UpdateProviderInfo();
+            var result = await UpdateProviderInfo();
 
             this.navigationHelper.OnNavigatedTo(e);
         }
@@ -141,8 +141,9 @@ namespace WindowsApp.Views
             }
         }
 
-        private async void UpdateProviderInfo()
+        private async Task<int> UpdateProviderInfo()
         {
+            string errorMessage = "";
             try
             {
                 var currentApp = (App)App.Current;
@@ -162,7 +163,7 @@ namespace WindowsApp.Views
                     {
                         if (lst == null)
                         {
-                            return;
+                            return 0;
                         }
                         AddProvider(item);
                     }
@@ -174,13 +175,16 @@ namespace WindowsApp.Views
                     CurrentProvider.Text = LastProvider.RecogEngineName;
                 }
                 this.ViewOfProvider.Height = cnt * 140.0;
+                return 0;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                string error = e.Message.ToString();
-                Frame.Navigate(typeof(NetworkError), error);
+                errorMessage = ex.Message;
             }
 
+            NetworkError.SetError(errorMessage);
+            Frame.Navigate(typeof(NetworkError));
+            return 0;
         }
 
         private void SelectedProvider_Event(object sender, SelectionChangedEventArgs e)
@@ -265,10 +269,10 @@ namespace WindowsApp.Views
         /// <summary>
         /// Button click to save Provider selection
         /// </summary>
-        private void UpdateProviderSelection_Click(object sender, RoutedEventArgs e)
+        private async void UpdateProviderSelection_Click(object sender, RoutedEventArgs e)
         {
             findSelectedProvider();
-            UpdateProviderInfo();
+            await UpdateProviderInfo();
         }
 
         /// <summary>

@@ -47,7 +47,7 @@
                     <ListView.ItemTemplate >
                         <DataTemplate>
                             <StackPanel>
-                                <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Foreground="Black" FontSize="{ThemeResource ContentControlFontSize}" Text="{Binding}"/>
+                                <TextBlock x:Name="resultBlock" FontWeight="SemiBold" TextWrapping="Wrap" Foreground="Black" FontSize="{ThemeResource ContentControlFontSize}" Text="{Binding}" Tapped="addHyperlink"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
