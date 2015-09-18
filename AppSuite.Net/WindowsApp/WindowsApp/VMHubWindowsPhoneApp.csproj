@@ -264,9 +264,9 @@
       <Project>{c46327b8-2c81-4c5d-926f-dbddc75225ab}</Project>
       <Name>ClientLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\vHub.Data\vHub.Data.csproj">
+    <ProjectReference Include="..\..\vHub.Data\VMHub.Data.csproj">
       <Project>{30533b3c-1fe4-4161-95b7-26945778bf71}</Project>
-      <Name>vHub.Data</Name>
+      <Name>VMHub.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
