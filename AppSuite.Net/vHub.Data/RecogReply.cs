@@ -31,7 +31,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace vHub.Data
+namespace VMHub.Data
 {
     using System;
     using System.Runtime.Serialization;

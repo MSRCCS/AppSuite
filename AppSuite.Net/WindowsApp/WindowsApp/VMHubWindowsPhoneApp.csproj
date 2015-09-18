@@ -247,7 +247,7 @@
     <Content Include="DataModel\SampleData.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\ServiceLib\BasicServiceData\BasicServiceData.csproj">
+    <ProjectReference Include="..\..\BasicServiceData\BasicServiceData.csproj">
       <Project>{66005bbd-1d3a-4c64-bde6-13132edcfb28}</Project>
       <Name>BasicServiceData</Name>
     </ProjectReference>
@@ -255,9 +255,9 @@
       <Project>{c46327b8-2c81-4c5d-926f-dbddc75225ab}</Project>
       <Name>ClientLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\vHub.Data\vHub.Data.csproj">
-      <Project>{30533b3c-1fe4-4161-95b7-26945778bf71}</Project>
-      <Name>vHub.Data</Name>
+    <ProjectReference Include="..\..\vHub.Data\VMHub.Data.csproj">
+      <Project>{863c69bc-fa16-4b32-a36e-5ddba0e9623e}</Project>
+      <Name>VMHub.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
