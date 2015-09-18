@@ -25,7 +25,7 @@ using Windows.Storage.Streams;
 using System.Threading.Tasks;
 using System.Threading;
 using Windows.Phone.UI.Input;
-using VMHub.Data;
+using vHub.Data;
 using VMHubClientLibrary;
 using WindowsApp.Views;
 
@@ -41,8 +41,6 @@ namespace WindowsApp
     public sealed partial class App : Application
     {
         private TransitionCollection transitions;
-        //public enum ActivationKind {}
-        //ActivationKind Kind { get; }
         internal static String DefaultGateway = "vhub.trafficmanager.net"; // "vhub.trafficmanager.net"; 
         internal static Guid CustomerID = Guid.Empty;
         internal static String CustomerKey = "SecretKeyUsed";
@@ -96,9 +94,6 @@ namespace WindowsApp
             this.InitializeComponent();
 
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait | DisplayOrientations.Landscape | DisplayOrientations.PortraitFlipped | DisplayOrientations.LandscapeFlipped;
-            // StatusBar statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
-            // statusBar.HideAsync().GetResults();
-
 
             this.Suspending += this.OnSuspending;
 
@@ -169,6 +164,9 @@ namespace WindowsApp
             GatewayCollection.GetOrAdd(this.CurrentGateway, "Default");
         }
 
+        /// <summary>
+        /// loads the provider information
+        /// </summary>
         private void LoadProviderInfo()
         {
             var localSetting = GetStorageSetting();
@@ -196,6 +194,9 @@ namespace WindowsApp
 
         }
 
+        /// <summary>
+        /// saves the provider information
+        /// </summary>
         internal void SaveProviderInfo()
         {
             if (!Object.ReferenceEquals(CurrentProvider, null))
@@ -206,6 +207,9 @@ namespace WindowsApp
             }
         }
 
+        /// <summary>
+        /// loads the domain information
+        /// </summary>
         private void LoadDomainInfo()
         {
             var localSetting = GetStorageSetting();
@@ -232,6 +236,9 @@ namespace WindowsApp
 
         }
 
+        /// <summary>
+        /// saves the domain information
+        /// </summary>
         internal void SaveDomainInfo()
         {
             if (!Object.ReferenceEquals(CurrentDomain, null))
@@ -252,6 +259,7 @@ namespace WindowsApp
 
             }
         }
+        //loads the tutorial information
         internal void LoadTutorialInfo()
         {
             var localSetting = GetStorageSetting();
@@ -268,9 +276,6 @@ namespace WindowsApp
             }
         }
         
-
-      
-
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used when the application is launched to open a specific file, to display
@@ -322,28 +327,6 @@ namespace WindowsApp
 
                 rootFrame.ContentTransitions = null;
                 rootFrame.Navigated += this.RootFrame_FirstNavigated;
-
-
-                // When the navigation stack isn't restored navigate to the first page,
-                // configuring the new page by passing required information as a navigation
-                // parameter
-              /*  var localSetting = GetStorageSetting();
-                if (localSetting.Values[GatewayHttpInterface.tutorialShown].Equals("Yes"))
-                {
-                    if (!rootFrame.Navigate(typeof(OptionsPage), e.Arguments))
-                    {
-
-                        throw new Exception("Failed to create initial page");
-                    }
-                }
-                else
-                {
-                    if (!rootFrame.Navigate(typeof(Tutorial), e.Arguments))
-                    {
-
-                        throw new Exception("Failed to create initial page");
-                    }
-                }*/
                 
                 if (TutorialRun == "Yes")
                 {
@@ -356,7 +339,7 @@ namespace WindowsApp
                 else
                 {
                     TutorialRun = "Yes";
-                    if (!rootFrame.Navigate(typeof(tutorialSkip), e.Arguments))
+                    if (!rootFrame.Navigate(typeof(PrivacyPolicy), e.Arguments))
                     {
 
                         throw new Exception("Failed to create initial page");
@@ -435,9 +418,7 @@ namespace WindowsApp
         /// </summary>
         /// <param name="e">Application activated event arguments, it can be casted to proper sub-type based on ActivationKind</param>
         protected async override void OnActivated(IActivatedEventArgs e)
-        {
-            
-
+        {            
             if (e.Kind.Equals(ActivationKind.PickFileContinuation))
             {
                
@@ -458,18 +439,13 @@ namespace WindowsApp
 
                 if (continuationEventArgs != null)
                 {
-
-                //    Frame scenarioFrame = PhotoLibraryResults.Current.FindName("ScenarioFrame") as Frame;
                     Frame scenarioFrame = OptionsPage.Current.FindName("ScenarioFrame") as Frame;
 
                     if (scenarioFrame != null)
                     {
-
                         // Call ContinuationManager to handle continuation activation
                         // pass the frame that it is the options page
-
                         ContinuationManager.Continue(continuationEventArgs, scenarioFrame);
-                      //  SuspensionManager.UnregisterFrame(scenarioFrame);
                     }
 
                 }
@@ -484,7 +460,6 @@ namespace WindowsApp
         }
    
 #endif
-
         /// <summary>
         /// Invoked when Navigation to a certain page fails
         /// </summary>
@@ -494,8 +469,6 @@ namespace WindowsApp
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
-
-       
 
     }
 }

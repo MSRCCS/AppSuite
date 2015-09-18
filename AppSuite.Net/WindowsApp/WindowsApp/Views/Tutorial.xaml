@@ -10,7 +10,8 @@
 
     <Grid>
         <Button BorderThickness="0" Padding="0" Click="next_click" >
-        <Image Source="../Assets/Icons/TutorialPage1.png" Stretch="Fill"/>
+            <Image Source="../Assets/Icons/TutorialPage1.png" Stretch="Fill"/>
         </Button>
+        <TextBox Text="(You must obtain consent from any person whose image you process)" FontSize="10" TextAlignment="Center" TextWrapping="Wrap" Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,310,30,277" Height="53" Width="335" BorderThickness="0" />
     </Grid>
 </Page>

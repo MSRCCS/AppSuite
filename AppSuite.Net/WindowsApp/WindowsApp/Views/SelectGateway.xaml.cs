@@ -135,8 +135,9 @@ namespace WindowsApp.Views
             // TODO: Save the unique state of the page here.
         }
       
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            //base.OnNavigatedTo(e);
             GatewayList = new ObservableCollection<OneServerInfo>();
             GatewayAdded = new ConcurrentDictionary<String, OneServerInfo>(StringComparer.OrdinalIgnoreCase);
             ViewOfGateway.ItemsSource = this.GatewayList;
@@ -149,13 +150,14 @@ namespace WindowsApp.Views
             MinItemShowed = 0;
             var currentApp = (App)App.Current;
             OldGateway = currentApp.CurrentGateway;
-            UpdateGatewayInfo();
+            var nRet = await UpdateGatewayInfo();
             this.navigationHelper.OnNavigatedTo(e);
         }
 
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            //base.OnNavigatedFrom(e);
             this.navigationHelper.OnNavigatedFrom(e);
         }
 
@@ -180,8 +182,9 @@ namespace WindowsApp.Views
             }
         }
 
-        private async void UpdateGatewayInfo()
+        private async Task<int> UpdateGatewayInfo()
         {
+            var errorString = ""; 
             try
             {
 
@@ -209,13 +212,14 @@ namespace WindowsApp.Views
 
                 var cnt = (double)(this.GatewayList.Count);
                 this.ViewOfGateway.Height = cnt * 60.0;
+                return 0; 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                string error = e.Message.ToString();
-                Frame.Navigate(typeof(NetworkError), error);
+                errorString = ex.Message;
             }
-
+            Frame.Navigate(typeof(NetworkError), errorString);
+            return 0; 
         }
 
         private void SelectedGateway_Event(object sender, SelectionChangedEventArgs e)
@@ -273,11 +277,11 @@ namespace WindowsApp.Views
         /// <summary>
         /// Button click to update gateway selection
         /// </summary>
-        private void UpdateGatewaySelection_Click(object sender, RoutedEventArgs e)
+        private async void UpdateGatewaySelection_Click(object sender, RoutedEventArgs e)
         {
             var currentApp = (App)App.Current;
             currentApp.CurrentGateway = this.CurrentGateway.Text;
-            UpdateGatewayInfo();
+            var nRet = await UpdateGatewayInfo();
 
         }
 

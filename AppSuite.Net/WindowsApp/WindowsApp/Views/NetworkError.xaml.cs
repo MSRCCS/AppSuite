@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Graphics.Display;
 using WindowsApp.Common;
 using WindowsApp.Data;
-using VMHub.Data;
+using vHub.Data;
 using VMHubClientLibrary;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
@@ -34,7 +34,7 @@ namespace WindowsApp.Views
     public sealed partial class NetworkError : Page
     {
         private readonly NavigationHelper navigationHelper;
-        private String errorMessage;
+        private static String errorMessage;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -46,6 +46,15 @@ namespace WindowsApp.Views
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
+        /// <summary>
+        /// sets the error message to be displayed
+        /// </summary>
+        /// <param name="errorString">an exception or error thrown by the app</param>
+        public static void SetError( String errorString )
+        {
+            errorMessage = errorString;
+        }
+
         #region Navigation
         /// <summary>
         /// Invoked when this page is about to be displayed in a Frame.
@@ -54,8 +63,7 @@ namespace WindowsApp.Views
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            errorMessage = e.Parameter as String;
-           
+           //Display the error that occured in the application
             Error.Text = errorMessage;
             
             this.navigationHelper.OnNavigatedTo(e);
@@ -106,21 +114,6 @@ namespace WindowsApp.Views
         }
         #endregion
 
-        /// <summary>
-        ///alert the user to the type of error
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void setErrorName(String error)
-        {
-            /*also you can write code that recieves a number and then sets the error accordingly. The errors can be
-             * Network is not functioning. 
-             * Gateway is not functioning (if exception is in GetActiveGateways())
-             * Current provider is not on the current gateway. 
-             * Current domain is not on the current gateway. 
-             */
-            Error.Text = error;
-        }
         private void returnHome_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(OptionsPage));
