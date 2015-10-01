@@ -106,6 +106,9 @@ public class GatewayHttpInterface {
     /// Default Gateway Used
     private var DefaultGateway = "vm-hub.trafficmanager.net"
     
+    /// Defaut Gateway check web
+    private var DefaultGatewayCheckPath = "/Web/info"
+    
     /// Default Address to get the status pag
     private var DefaultPath = "/web/info"
     
@@ -167,24 +170,60 @@ public class GatewayHttpInterface {
                 {
                     if retResp.length > 0
                     {
-                        completionHandler(true)
+                        self.NetworkStatus.SetState(true)
                     }
                     else
                     {
                         self.ErrorMessage = String(format: "Access to site \(GatewayHttpInterface.DefaultCheckSite) return 0B")
-                        completionHandler(false)
+                        self.NetworkStatus.SetState(true)
                     }
                 }
                 else
                 {
                     self.ErrorMessage = String(format: "Access to site \(GatewayHttpInterface.DefaultCheckSite) fails to complete")
-                    completionHandler(false)
+                    self.NetworkStatus.SetState(true)
                 }
+                completionHandler(self.NetworkStatus.State)
             } )
         }
         else
         {
             completionHandler(NetworkStatus.State)
+        }
+    }
+    
+    /// Check if a certain gateway is online. If true, the gateway state will be updated. Otherwsie, the gateway state will be checked if it hasn't been connected, 
+    /// and sometime has passed from the last state update. 
+    /// Return: whether the gateway is connected. 
+    public func CheckGatewayStatus( bForce: Bool, completionHandler: Bool -> Void )
+    {
+        if ( bForce || GatewayStatus.NeedsToCheck())
+        {
+            let url = self.FormURL( DefaultGateway, path:DefaultGatewayCheckPath )
+            _ = OneHttpWebRequest( urlInput: url, reqCompletionHandler: { (resp: NSString? ) -> Void in
+                if let retResp = resp
+                {
+                    if retResp.length > 0
+                    {
+                        self.GatewayStatus.SetState(true)
+                    }
+                    else
+                    {
+                        self.ErrorMessage = String(format: "Access to gateway \(self.DefaultGateway) return 0B")
+                        self.GatewayStatus.SetState(true)
+                    }
+                }
+                else
+                {
+                    self.ErrorMessage = String( format: "Access to gateway \(self.DefaultGateway) fails to complete" )
+                    self.GatewayStatus.SetState(true)
+                }
+                completionHandler(self.GatewayStatus.State)
+            } )
+        }
+        else
+        {
+            completionHandler(GatewayStatus.State)
         }
     }
 
