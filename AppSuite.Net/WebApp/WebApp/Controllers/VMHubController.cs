@@ -56,7 +56,7 @@ namespace WebDemo.Controllers
             return View(model);
         }
 
-        public static Bitmap DrawRectangle(Image img, RecogResult[] recogResult)
+        public static Bitmap DrawRectangle(Image img, int maxHeight, RecogResult[] recogResult)
         {
             //Setup the drawing color map;
             Color bkColor = Color.Transparent;
@@ -66,21 +66,33 @@ namespace WebDemo.Controllers
             else
                 pf = img.PixelFormat;
 
-            var newImg = new Bitmap(img.Width, img.Height, pf);
+            float ratio = 1;
+            if (maxHeight < img.Height)
+                ratio = (float)maxHeight / img.Height;
+
+            var newImg = new Bitmap((int)(img.Width * ratio), Math.Min(img.Height, maxHeight), pf);
             using (var g = Graphics.FromImage(newImg))
-            using (Pen pen = new Pen(Color.Green, 3))
-            using (Font arialFont = new Font("Arial", 15))
+            using (Pen pen = new Pen(Color.Yellow, 2))
+            using (Font arialFont = new Font("Arial", 9))
             {
-                g.DrawImage(img, 0, 0, img.Width, img.Height);
+                g.DrawImage(img, 0, 0, newImg.Width, newImg.Height);
 
                 int facecnt = 0;
                 foreach (var face in recogResult)
                 {
                     var r = face.Rect;
-                    g.DrawRectangle(pen, r.X, r.Y, r.Width, r.Height);
+                    g.DrawRectangle(pen, r.X * ratio, r.Y * ratio, r.Width * ratio, r.Height * ratio);
 
-                    string text = string.Format("Face{0}", facecnt);
-                    g.DrawString(text, arialFont, Brushes.Green, new PointF(r.X, r.Y + r.Height));
+                    string text;
+                    if (face.CategoryResult.Length > 0 && face.CategoryResult[0].Confidence > 0.8)
+                    {
+                        text = string.Format("{0}: {1}", facecnt, face.CategoryResult[0].CategoryName, face.CategoryResult[0].Confidence);
+                    }
+                    else
+                    {
+                        text = string.Format("Face{0}", facecnt);
+                    }
+                    g.DrawString(text, arialFont, Brushes.Yellow, new PointF(r.X * ratio, (r.Y + r.Height) * ratio));
                     facecnt++;
                 }
             }
@@ -101,6 +113,7 @@ namespace WebDemo.Controllers
                 return RedirectToAction("Index");
 
             ViewBag.ImageUrl = imageUrl;
+            ViewBag.RecogResult = null;
 
             string result = string.Empty;
 
@@ -134,10 +147,11 @@ namespace WebDemo.Controllers
                     try
                     {
                         var recogResult = JsonConvert.DeserializeObject<RecogResult[]>(result);
+                        ViewBag.RecogResult = recogResult;
                         // draw rectangles
                         using (var ms = new MemoryStream(imageData))
                         using (var bmp = new Bitmap(ms))
-                        using (var newImg = DrawRectangle(bmp, recogResult))
+                        using (var newImg = DrawRectangle(bmp, 400, recogResult))
                         { 
                             ViewBag.ImageData = ImageProcessing.SaveImageToByteArray(newImg, 85L);
                         }

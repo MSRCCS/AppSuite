@@ -33,4 +33,36 @@ else if (ViewBag.ImageUrl != null)
 }
 
 <h3>Result</h3>
+
+@if (ViewBag.RecogResult != null)
+{
+    <table>
+        <tr>
+            <th></th>
+            <th>EntityImage</th>
+            <th>EntityName</th>
+            <th>Confidence</th>
+        </tr>
+        @{ int cnt = 0; }
+        @foreach (var face in ViewBag.RecogResult)
+        {
+            foreach (var entity in face.CategoryResult)
+            {
+                if (entity.Confidence > 0.8)
+                {
+                    var aux = entity.AuxResult.Split('\t');
+                    <tr>
+                        <td><strong>Face @cnt</strong></td>
+                        <td><img src="@aux[1]" height="120" /></td>
+                        <td><a href="http://knowledge.microsoft.com/@aux[0]"><strong>@entity.CategoryName</strong></a></td>
+                        @*<td>@result.SatoriId</td>*@
+                        <td>@entity.Confidence.ToString("F3")</td>
+                    </tr>
+                }
+            }
+            cnt++;
+        }
+    </table>
+}
+<br /><br />
 <p>@ViewBag.ResultString</p>

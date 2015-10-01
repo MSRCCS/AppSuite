@@ -53,6 +53,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.Storage.Streams;
 using Windows.Web.Http;
 using Windows.UI.WebUI;
+using System.Runtime.Serialization.Json;
+using VMHub.Data;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -222,6 +224,26 @@ namespace WindowsApp.Views
         {
             var currentApp = (App)App.Current;
 
+            var resultString = currentApp.CurrentRecogResult;
+
+            // try to parse celebrity recognition result first
+            RecogResult[] recogResult = null;
+            bool parseSucceeded = false;
+            try
+            {
+                using (var memStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(resultString)))
+                {
+                    var json = new DataContractJsonSerializer(typeof(RecogResult[]));
+                    recogResult = (RecogResult[])json.ReadObject(memStream);
+                }
+
+                parseSucceeded = true;
+            }
+            catch
+            { 
+            }
+
+
             var ms = currentApp.CurrentImageRecog;
             if (!Object.ReferenceEquals(ms, null))
             {
@@ -238,9 +260,27 @@ namespace WindowsApp.Views
 
             }
 
-            var resultString = currentApp.CurrentRecogResult;
-
-            if (resultString.Contains(':') && resultString.Contains(';'))
+            if (parseSucceeded)
+            {
+                int faceCount = 0, recogizedCount = 0;
+                foreach (var face in recogResult)
+                {
+                    foreach (var entity in face.CategoryResult)
+                    {
+                        if (entity.Confidence > 0.9)
+                        {
+                            string conf = (entity.Confidence * 100).ToString("0");
+                            string display = faceCount + ": " + entity.CategoryName + " " + conf + "%";
+                            display = faceCount + ": " + entity.CategoryName + howManyDots(display) + conf + "%";
+                            resultsList.Add(display);
+                            recogizedCount++;
+                        }
+                    }
+                    faceCount++;
+                }
+                resultsList.Insert(0, string.Format("Detected {0} faces, and recogized {1}", faceCount, recogizedCount));
+            }
+            else if (resultString.Contains(':') && resultString.Contains(';'))
             {
                 spliceResult(resultString);
             }
@@ -251,7 +291,6 @@ namespace WindowsApp.Views
                 resultsList.Add(reason);
                 resultsList.Add(r2);
             }
-
             else
             {
                 resultsList.Add(resultString);
