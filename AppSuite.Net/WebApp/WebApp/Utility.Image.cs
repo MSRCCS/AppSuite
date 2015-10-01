@@ -20,6 +20,22 @@ namespace Utility
             return returncodec;
         }
 
+        // save image to byte array in jpg format
+        static public byte[] SaveImageToByteArray(Image image, Int64 quality = 85L)
+        {
+            var jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+            var myEncoder = System.Drawing.Imaging.Encoder.Quality;
+            var myEncoderParas = new EncoderParameters(1);
+            var myEncoderPara = new EncoderParameter(myEncoder, quality);
+            myEncoderParas.Param[0] = myEncoderPara;
+
+            using (var mw = new MemoryStream())
+            {
+                image.Save(mw, jpgEncoder, myEncoderParas);
+                return mw.ToArray();
+            }
+        }
+
         static public Bitmap ResizeImage(Image image, int width, int height)
         {
             var destRect = new Rectangle(0, 0, width, height);
@@ -78,16 +94,7 @@ namespace Utility
                 if (img == streamImg)
                     return imgData;
 
-                // save image to jpg format
-                var jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-                var myEncoder = System.Drawing.Imaging.Encoder.Quality;
-                var myEncoderParas = new EncoderParameters(1);
-                var myEncoderPara = new EncoderParameter(myEncoder, quality);
-                myEncoderParas.Param[0] = myEncoderPara;
-
-                var mw = new MemoryStream();
-                img.Save(mw, jpgEncoder, myEncoderParas);
-                return mw.ToArray();
+                return SaveImageToByteArray(img, quality);
             }
         }
     }

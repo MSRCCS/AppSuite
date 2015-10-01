@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -79,13 +79,13 @@
   </Target>
   -->
   <ItemGroup>
-    <ProjectReference Include="..\vHub.Data\vHub.Data.csproj">
-      <Project>{30533B3C-1FE4-4161-95B7-26945778BF71}</Project>
-      <Name>vHub.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BasicServiceData\BasicServiceData.csproj">
-      <Project>{66005BBD-1D3A-4C64-BDE6-13132EDCFB28}</Project>
+      <Project>{66005bbd-1d3a-4c64-bde6-13132edcfb28}</Project>
       <Name>BasicServiceData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vHub.Data\VMHub.Data.csproj">
+      <Project>{30533B3C-1FE4-4161-95B7-26945778BF71}</Project>
+      <Name>VMHub.Data</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

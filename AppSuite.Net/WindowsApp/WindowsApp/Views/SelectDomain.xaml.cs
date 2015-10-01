@@ -45,7 +45,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Graphics.Display;
 using WindowsApp.Common;
 using WindowsApp.Data;
-using vHub.Data;
+using VMHub.Data;
 using VMHubClientLibrary;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
@@ -128,7 +128,7 @@ namespace WindowsApp.Views
             // TODO: Save the unique state of the page here.
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             DomainList = new ObservableCollection<RecogInstance>();
             DomainAdded = new ConcurrentDictionary<Guid, RecogInstance>();
@@ -142,7 +142,7 @@ namespace WindowsApp.Views
             MinItemShowed = 0;
             var currentApp = (App)App.Current;
             OldDomain = currentApp.CurrentDomain;
-            UpdateDomainInfo();
+            int result = await UpdateDomainInfo();
             this.navigationHelper.OnNavigatedTo(e);
         }
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -153,12 +153,11 @@ namespace WindowsApp.Views
         #endregion
 
         # region Domain Operations
-        private async void UpdateDomainInfo()
+        private async Task<int> UpdateDomainInfo()
         {
+            string errorMessage = "";
             try
             {
-
-
                 var currentApp = (App)App.Current;
                 App.VMHub.CurrentDomain = currentApp.CurrentDomain;
 
@@ -186,12 +185,16 @@ namespace WindowsApp.Views
                     CurrentDomain.Text = LastDomain.Version.ToString();
                 }
                 this.ViewOfDomain.Height = cnt * 90.0;
+                return 0;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                string error = e.Message.ToString();
-                Frame.Navigate(typeof(NetworkError), error);
+                errorMessage = ex.Message;
             }
+
+            NetworkError.SetError(errorMessage);
+            Frame.Navigate(typeof(NetworkError));
+            return 0;
         }
 
         private void AddDomain(RecogInstance entry)
@@ -279,10 +282,10 @@ namespace WindowsApp.Views
         /// <summary>
         /// Button click to update the domain list
         /// </summary>
-        private void UpdateDomainSelection_Click(object sender, RoutedEventArgs e)
+        private async void UpdateDomainSelection_Click(object sender, RoutedEventArgs e)
         {
             findSelectedDomain();
-            UpdateDomainInfo();
+            var result = await UpdateDomainInfo();
         }
 
         /// <summary>

@@ -6,10 +6,11 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using VMHubClientLibrary;
-using vHub.Data;
+using VMHub.Data;
 using System.Threading.Tasks;
 using WebDemo.Models;
 using System.Net;
+using Newtonsoft.Json;
 using Utility;
 
 namespace WebDemo.Controllers
@@ -55,9 +56,48 @@ namespace WebDemo.Controllers
             return View(model);
         }
 
-        public static System.Drawing.Image resizeImage(System.Drawing.Image imgToResize, Size size)
+        public static Bitmap DrawRectangle(Image img, int maxHeight, RecogResult[] recogResult)
         {
-            return (System.Drawing.Image)(new Bitmap(imgToResize, size));
+            //Setup the drawing color map;
+            Color bkColor = Color.Transparent;
+            System.Drawing.Imaging.PixelFormat pf = default(System.Drawing.Imaging.PixelFormat);
+            if (bkColor == Color.Transparent)
+                pf = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
+            else
+                pf = img.PixelFormat;
+
+            float ratio = 1;
+            if (maxHeight < img.Height)
+                ratio = (float)maxHeight / img.Height;
+
+            var newImg = new Bitmap((int)(img.Width * ratio), Math.Min(img.Height, maxHeight), pf);
+            using (var g = Graphics.FromImage(newImg))
+            using (Pen pen = new Pen(Color.Yellow, 2))
+            using (Font arialFont = new Font("Arial", 9))
+            {
+                g.DrawImage(img, 0, 0, newImg.Width, newImg.Height);
+
+                int facecnt = 0;
+                foreach (var face in recogResult)
+                {
+                    var r = face.Rect;
+                    g.DrawRectangle(pen, r.X * ratio, r.Y * ratio, r.Width * ratio, r.Height * ratio);
+
+                    string text;
+                    if (face.CategoryResult.Length > 0 && face.CategoryResult[0].Confidence > 0.8)
+                    {
+                        text = string.Format("{0}: {1}", facecnt, face.CategoryResult[0].CategoryName, face.CategoryResult[0].Confidence);
+                    }
+                    else
+                    {
+                        text = string.Format("Face{0}", facecnt);
+                    }
+                    g.DrawString(text, arialFont, Brushes.Yellow, new PointF(r.X * ratio, (r.Y + r.Height) * ratio));
+                    facecnt++;
+                }
+            }
+
+            return newImg;
         }
 
         // GET: VMHub
@@ -73,6 +113,7 @@ namespace WebDemo.Controllers
                 return RedirectToAction("Index");
 
             ViewBag.ImageUrl = imageUrl;
+            ViewBag.RecogResult = null;
 
             string result = string.Empty;
 
@@ -90,7 +131,7 @@ namespace WebDemo.Controllers
                     {
                         using (BinaryReader br = new BinaryReader(file.InputStream))
                             imageData = br.ReadBytes(file.ContentLength);
-                        imageData = ImageProcessing.ResizeImageInJpeg(imageData, 600, 85L);
+                        imageData = ImageProcessing.ResizeImageInJpeg(imageData, 1600, 85L);
                         // only set ImageData for locally uploaded image for showing in HTML page
                         // for Web image, the image will be displayed directly from Web Url.
                         ViewBag.ImageData = imageData;
@@ -99,10 +140,26 @@ namespace WebDemo.Controllers
                     {
                         using (System.Net.WebClient webClient = new WebClient())
                             imageData = await webClient.DownloadDataTaskAsync(imageUrl);
-                        imageData = ImageProcessing.ResizeImageInJpeg(imageData, 600, 85L);
+                        imageData = ImageProcessing.ResizeImageInJpeg(imageData, 1600, 85L);
                     }
 
                     result = await vmHub.ProcessAsyncString(Guid.Empty, Guid.Empty, Guid.Parse(Model.SelectedClassifier), Guid.Empty, Guid.Empty, imageData);
+                    try
+                    {
+                        var recogResult = JsonConvert.DeserializeObject<RecogResult[]>(result);
+                        ViewBag.RecogResult = recogResult;
+                        // draw rectangles
+                        using (var ms = new MemoryStream(imageData))
+                        using (var bmp = new Bitmap(ms))
+                        using (var newImg = DrawRectangle(bmp, 400, recogResult))
+                        { 
+                            ViewBag.ImageData = ImageProcessing.SaveImageToByteArray(newImg, 85L);
+                        }
+                    }
+                    catch
+                    {
+
+                    }
                 }
                 catch (Exception e)
                 {

@@ -70,15 +70,16 @@ namespace WindowsApp
         internal VideoRotation currentRotation;
         internal Boolean takePicture = false;
         internal Boolean inProcessing = false;
+        private Boolean isLocked = false;
 
         /// <summary>
-        /// Initializing the Component
+        /// Constructor
         /// </summary>
         public MainPage()
         {
             this.InitializeComponent();
             Current = this;
-
+            Window.Current.VisibilityChanged += CurrentWindow_VisibilityChanged;
             this.NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -87,6 +88,57 @@ namespace WindowsApp
         }
 
         # region Navigation
+
+        /// <summary>
+        /// called when the page is navigated to
+        /// </summary>
+        /// <param name="e"></param>
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            inProcessing = false;
+            acceptButton.Visibility = Visibility.Collapsed;
+            rejectButton.Visibility = Visibility.Collapsed;
+            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait | DisplayOrientations.Landscape | DisplayOrientations.PortraitFlipped | DisplayOrientations.LandscapeFlipped;
+            await initCamera();
+            this.navigationHelper.OnNavigatedTo(e);
+        }
+
+        /// <summary>
+        /// called when the app exits the page
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            if (captureManager != null)
+            {
+                captureManager.Dispose();
+                captureManager = null;
+                capturePreview.Source = null;
+                imagePreview.Source = null;
+            }
+            takePicture = false;
+            this.navigationHelper.OnNavigatedFrom(e);
+            Loading.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// maintains the app's visual state when the screen is locked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void CurrentWindow_VisibilityChanged(object sender, Windows.UI.Core.VisibilityChangedEventArgs e)
+        {
+            if (e.Visible && isLocked == true)
+            {
+                await retakePicture();
+                Loading.Visibility = Visibility.Collapsed;
+                isLocked = false;
+            }
+            else
+            {
+                isLocked = true;
+            }
+        }
         /// <summary>
         /// Gets the <see cref="NavigationHelper"/> associated with this <see cref="Page"/>.
         /// </summary>
@@ -128,40 +180,7 @@ namespace WindowsApp
         /// serializable state.</param>
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
-
             // TODO: Save the unique state of the page here.
-        }
-        /// <summary>
-        /// Adds an item to the list when the app bar button is clicked.
-        /// </summary>
-
-
-
-
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            inProcessing = false;
-            acceptButton.Visibility = Visibility.Collapsed;
-            rejectButton.Visibility = Visibility.Collapsed;
-            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait | DisplayOrientations.Landscape | DisplayOrientations.PortraitFlipped | DisplayOrientations.LandscapeFlipped;
-            await initCamera();
-            this.navigationHelper.OnNavigatedTo(e);
-        }
-
-
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            if (captureManager != null)
-            {
-                captureManager.Dispose();
-                captureManager = null;
-                capturePreview.Source = null;
-                imagePreview.Source = null;
-            }
-            takePicture = false;
-            this.navigationHelper.OnNavigatedFrom(e);
-            Loading.Visibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -185,7 +204,7 @@ namespace WindowsApp
         }
 
         /// <summary>
-        /// finds the rotation of which to rotate the image
+        /// finds the degree of rotation to rotate the image/video preview
         /// </summary>
         /// <param name="displayOrientation"></param>
         /// the current phone orientation
@@ -244,6 +263,11 @@ namespace WindowsApp
             imagePreview.RenderTransform = rotate;
 
         }
+        /// <summary>
+        /// rotates the image by the currentRotation value
+        /// </summary>
+        /// <param name="mrs">InMemoryRandomAccessStream containg the image data</param>
+        /// <returns>byte [] to be sent through processing</returns>
         async private Task<byte[]> RotateImage(InMemoryRandomAccessStream mrs)
         {
             BitmapDecoder decoder = await BitmapDecoder.CreateAsync(mrs).AsTask().ConfigureAwait(false);
@@ -254,7 +278,6 @@ namespace WindowsApp
                 h = decoder.PixelWidth;
             }
 
-
             BitmapTransform transform = new BitmapTransform() { Rotation = (BitmapRotation)currentRotation };
 
             PixelDataProvider pixelData = await decoder.GetPixelDataAsync(
@@ -263,26 +286,28 @@ namespace WindowsApp
                 transform,
                 ExifOrientationMode.RespectExifOrientation,
                 ColorManagementMode.DoNotColorManage);
+
             byte[] pixels = pixelData.DetachPixelData();
-            //InMemoryRandomAccessStream encoded = new InMemoryRandomAccessStream();
+
             BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, mrs);
-
-
-
             encoder.SetPixelData(BitmapPixelFormat.Rgba8, BitmapAlphaMode.Premultiplied, w, h, 96, 96, pixels);
             await encoder.FlushAsync().AsTask().ConfigureAwait(false);
+
             mrs.Seek(0);
             byte[] outBytes = new byte[mrs.Size];
             await mrs.AsStream().ReadAsync(outBytes, 0, outBytes.Length);
+
             MemoryStream ms = new MemoryStream(outBytes);
             var currentApp = (App)App.Current;
             currentApp.CurrentImageRecog = ms;
+
             return outBytes;
         }
 
         #endregion
 
         #region Take Picture Functions
+
         /// <summary>
         /// initializes the camera
         /// </summary>
@@ -299,8 +324,6 @@ namespace WindowsApp
                 AudioDeviceId = string.Empty,
                 VideoDeviceId = cameraID.Id
             });
-
-            //await captureManager.InitializeAsync();
 
             //Sets the camera resolution to the minimum available. Allows the image to be sent through processing without resizing
             var minResolution = captureManager.VideoDeviceController.GetAvailableMediaStreamProperties(MediaStreamType.Photo).Aggregate((i1, i2) => (i1 as VideoEncodingProperties).Width < (i2 as VideoEncodingProperties).Width ? i1 : i2);
@@ -411,21 +434,11 @@ namespace WindowsApp
                     rejectButton.Visibility = Visibility.Collapsed;
                     Loading.Visibility = Visibility.Visible;
 
-                    InMemoryRandomAccessStream mrs = await ConvertTo(ms.ToArray());
                     //rotates the image and sends it through VMHub processing
+                    InMemoryRandomAccessStream mrs = await ConvertTo(ms.ToArray());                   
                     Byte[] buf = await RotateImage(mrs);
-                    try
-                    {
-                        await this.processRequestAfterRotate(buf);
-                    }
-                    catch(Exception e)
-                    {
-                        string error = e.Message.ToString();
-                        Frame.Navigate(typeof(NetworkError), error);
-                    }
-
+                    await this.processRequestAfterRotate(buf);
                 }
-
             }
             return 0;
         }
@@ -437,9 +450,21 @@ namespace WindowsApp
         /// <returns></returns>
         private async Task<int> processRequestAfterRotate(byte[] rotatedImage)
         {
-            var currentApp = (App)App.Current;
-            currentApp.CurrentRecogResult = await App.VMHub.ProcessRequest(rotatedImage);
-            Frame.Navigate(typeof(WindowsApp.Views.RecogResultPage), "Took Picture");
+            string errorMessage = "";
+            try
+            {
+                var currentApp = (App)App.Current;
+                currentApp.CurrentRecogResult = await App.VMHub.ProcessRequest(rotatedImage);
+                Frame.Navigate(typeof(WindowsApp.Views.RecogResultPage), "Took Picture");
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+            }
+
+            NetworkError.SetError(errorMessage);
+            Frame.Navigate(typeof(NetworkError));
             return 0;
         }
 
@@ -479,6 +504,10 @@ namespace WindowsApp
         /// <param name="e"></param>
         private async void retakePicture_click(object sender, RoutedEventArgs e)
         {
+            await retakePicture();
+        }
+         private async Task<int> retakePicture()
+         {
             rejectButton.Visibility = Visibility.Collapsed;
             acceptButton.Visibility = Visibility.Collapsed;
             takePictureButton.Visibility = Visibility.Visible;
@@ -494,6 +523,7 @@ namespace WindowsApp
             takePicture = false;
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait | DisplayOrientations.Landscape | DisplayOrientations.LandscapeFlipped | DisplayOrientations.PortraitFlipped;
             await initCamera();
+            return 0;
         }
 
         #endregion

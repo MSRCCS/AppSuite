@@ -33,7 +33,7 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
-using vHub.Data;
+using VMHub.Data;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -653,6 +653,21 @@ namespace VMHubClientLibrary
             // Forcing checking gateway
             var bGateway = await this.CheckGatewayStatus(true);
             return false; 
+        }
+        /// <summary>
+        /// Check if the default provider is live on the gateway
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Boolean> CheckProviderStatus()
+        {
+            if ( Object.ReferenceEquals(this.CurrentProvider, null ))
+            {
+                return false;
+            }
+            else
+            { 
+                return await CheckProviderStatus(this.CurrentProvider.RecogEngineID);
+            }
         }
         /// <summary>
         /// Get the a list of providers registered on the current gateway 
