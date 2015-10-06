@@ -84,7 +84,7 @@ namespace WebDemo.Controllers
                     g.DrawRectangle(pen, r.X * ratio, r.Y * ratio, r.Width * ratio, r.Height * ratio);
 
                     string text;
-                    if (face.CategoryResult.Length > 0 && face.CategoryResult[0].Confidence > 0.8)
+                    if (face.CategoryResult.Length > 0)
                     {
                         text = string.Format("{0}: {1}", facecnt, face.CategoryResult[0].CategoryName, face.CategoryResult[0].Confidence);
                     }

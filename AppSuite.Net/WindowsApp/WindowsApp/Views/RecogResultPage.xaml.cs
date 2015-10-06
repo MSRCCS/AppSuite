@@ -267,14 +267,11 @@ namespace WindowsApp.Views
                 {
                     foreach (var entity in face.CategoryResult)
                     {
-                        if (entity.Confidence > 0.9)
-                        {
-                            string conf = (entity.Confidence * 100).ToString("0");
-                            string display = faceCount + ": " + entity.CategoryName + " " + conf + "%";
-                            display = faceCount + ": " + entity.CategoryName + howManyDots(display) + conf + "%";
-                            resultsList.Add(display);
-                            recogizedCount++;
-                        }
+                        string conf = (entity.Confidence * 100).ToString("0");
+                        string display = faceCount + ": " + entity.CategoryName + " " + conf + "%";
+                        display = faceCount + ": " + entity.CategoryName + howManyDots(display) + conf + "%";
+                        resultsList.Add(display);
+                        recogizedCount++;
                     }
                     faceCount++;
                 }

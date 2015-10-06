@@ -48,17 +48,14 @@ else if (ViewBag.ImageUrl != null)
         {
             foreach (var entity in face.CategoryResult)
             {
-                if (entity.Confidence > 0.8)
-                {
-                    var aux = entity.AuxResult.Split('\t');
-                    <tr>
-                        <td><strong>Face @cnt</strong></td>
-                        <td><img src="@aux[1]" height="120" /></td>
-                        <td><a href="http://knowledge.microsoft.com/@aux[0]"><strong>@entity.CategoryName</strong></a></td>
-                        @*<td>@result.SatoriId</td>*@
-                        <td>@entity.Confidence.ToString("F3")</td>
-                    </tr>
-                }
+                var aux = entity.AuxResult.Split('\t');
+                <tr>
+                    <td><strong>Face @cnt</strong></td>
+                    <td><img src="@aux[1]" height="120" /></td>
+                    <td><a href="http://knowledge.microsoft.com/@aux[0]"><strong>@entity.CategoryName</strong></a></td>
+                    @*<td>@result.SatoriId</td>*@
+                    <td>@entity.Confidence.ToString("F3")</td>
+                </tr>
             }
             cnt++;
         }
