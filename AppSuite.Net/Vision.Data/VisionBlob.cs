@@ -14,7 +14,7 @@
     limitations under the License.                                                      
 
 	File: 
-		VHubBlob.fs
+		VisionBlob.fs
   
 	Description: 
 		Class that defines a Blob (cacheable object) in VHub 
@@ -35,7 +35,7 @@ namespace Prajna.Services.Vision.Data
     /// <summary>
     /// A VHub Blob (cacheable object)
     /// </summary>
-    public class VHubBlob
+    public class VisionBlob
     {
        /// <summary>
         /// Data 

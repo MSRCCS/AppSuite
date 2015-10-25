@@ -89,7 +89,7 @@
     <Compile Include="RecogReply.cs" />
     <Compile Include="RecogRequest.cs" />
     <Compile Include="RecogResult.cs" />
-    <Compile Include="VHubBlob.cs" />
+    <Compile Include="VisionBlob.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\WindowsApp\packages\Xamarin.Forms.1.4.2.6359\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\WindowsApp\packages\Xamarin.Forms.1.4.2.6359\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
