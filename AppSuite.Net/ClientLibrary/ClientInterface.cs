@@ -33,7 +33,7 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
-using VMHub.Data;
+using Prajna.Services.Vision.Data;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -44,7 +44,7 @@ using System.Diagnostics;
 using Prajna.Service.CoreServices.Data;
 
 
-namespace VMHubClientLibrary
+namespace Prajna.AppLibrary
 {
     /// <summary>
     /// State of a service 

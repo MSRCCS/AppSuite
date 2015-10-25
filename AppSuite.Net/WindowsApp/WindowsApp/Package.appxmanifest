@@ -3,7 +3,7 @@
   <Identity Name="25661MightyDog.VMHub" Publisher="CN=C00844E4-35DD-4DC5-AFAA-34FDAECFDF73" Version="1.1.0.5" />
   <mp:PhoneIdentity PhoneProductId="1d4961ea-ff34-4383-a2d4-36941f026495" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>VM Hub</DisplayName>
+    <DisplayName>Prajna Vision</DisplayName>
     <PublisherDisplayName>Mighty Dog</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -16,7 +16,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="WindowsApp.App">
-      <m3:VisualElements DisplayName="VM Hub" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="WindowsApp" ForegroundText="light" BackgroundColor="transparent">
+      <m3:VisualElements DisplayName="Prajna Vision" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="WindowsApp" ForegroundText="light" BackgroundColor="transparent">
         <m3:LockScreen Notification="badge" BadgeLogo="Assets\logo58-2.png" />
         <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
         </m3:DefaultTile>

@@ -43,7 +43,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Graphics.Display;
 using Prajna.Service.CoreServices.Data;
-using VMHubClientLibrary;
+using Prajna.AppLibrary;
 using System.Threading.Tasks;
 using WindowsApp.Common;
 using WindowsApp.Data;

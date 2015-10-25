@@ -26,7 +26,7 @@
     Date:
         Jan. 2015
  *******************************************************************/
-namespace VMHub.Data
+namespace Prajna.Services.Vision.Data
 {
     using System;
     using System.Runtime.Serialization;

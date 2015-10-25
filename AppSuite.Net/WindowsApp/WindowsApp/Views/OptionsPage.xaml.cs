@@ -21,7 +21,7 @@ using WindowsApp.Common;
 using Windows.Graphics.Display;
 using System.Threading.Tasks;
 using Windows.UI;
-using VMHubClientLibrary;
+using Prajna.AppLibrary;
 using System.Net.Http;
 
 
