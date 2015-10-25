@@ -1,5 +1,5 @@
-﻿Developer Code of Conduct for VM Hub Gateway
-There are two major developer components to the VM Hub Gateway
+﻿Developer Code of Conduct for Prajna Vision Gateway
+There are two major developer components to the Prajna Vision Gateway
 •	Client Apps
 •	Service Endpoints
 Do's for Client Apps
@@ -7,16 +7,16 @@ Do's for Client Apps
 o	People who use your app must have the consent of the people whose images are being processed by your app. We ask that you include a prominent notice in your app UI so your end users know that consent is required. 
 •	Privacy: 
 o	You'll need to have a privacy policy. This should cover what data (including images) you are collecting, what you will be doing with that data, and who you will be sharing it with. Include a prominent link to the privacy policy in your app.
-o	Since you are using the VM Hub Gateway, you'll also need to include this blurb in your privacy policy: 
-	<<insert your app name here>> links to service endpoints via the Microsoft VM Hub Gateway. To report abuse of the VM Hub Gateway to Microsoft, please visit <<insert VM Hub website URL>> and use the “Report Abuse” link at the bottom of the page to contact Microsoft. 
+o	Since you are using the Prajna Vision Gateway, you'll also need to include this blurb in your privacy policy: 
+	<<insert your app name here>> links to service endpoints via the Microsoft Prajna Vision Gateway. To report abuse of the Prajna Vision Gateway to Microsoft, please visit <<insert Prajna Vision website URL>> and use the “Report Abuse” link at the bottom of the page to contact Microsoft. 
 •	Reporting abuse & requests to access or delete personal information: 
 o	We ask that you have a way for your users to report abuse to you, and for you to handle access and deletion requests (e.g. someone deletes their account and would like to have all of their images deleted as well). 
 •	Attribution: 
-o	Include attribution on the splash screen at app start-up (on screens the size of smart phones and larger) or on the about page of the app (for no screens or smaller screens): “Powered by Microsoft’s VM Hub” with a link to <<insert VM Hub website URL>>.
+o	Include attribution on the splash screen at app start-up (on screens the size of smart phones and larger) or on the about page of the app (for no screens or smaller screens): “Powered by Microsoft’s Prajna Vision” with a link to <<insert Prajna Vision website URL>>.
 Do's for Service Endpoints
 •	You'll need to have a privacy policy. This should cover what data (including images) you are collecting, what you will be doing with that data, and who you will be sharing it with.
-•	Since you are using the VM Hub Gateway, you'll also need to include this blurb in your privacy policy: 
-o	<<insert service endpoint provider name here>> connects to the Microsoft VM Hub Gateway. To report abuse of the VM Hub Gateway to Microsoft, please visit <<insert VM Hub website URL>> and use the “Report Abuse” link at the bottom of the page to contact Microsoft.
+•	Since you are using the Prajna Vision Gateway, you'll also need to include this blurb in your privacy policy: 
+o	<<insert service endpoint provider name here>> connects to the Microsoft Prajna Vision Gateway. To report abuse of the Prajna Vision Gateway to Microsoft, please visit <<insert Prajna Vision website URL>> and use the “Report Abuse” link at the bottom of the page to contact Microsoft.
 •	Reporting abuse & requests to access or delete personal information: 
 o	We ask that you have a way for your users to report abuse to you, and for you to handle access and deletion requests (e.g. someone deletes their account and would like to have all of their images deleted as well). 
 Don'ts for Client Apps
@@ -33,8 +33,8 @@ o	To defame, abuse, harass, stalk, threaten, or otherwise violate the legal righ
 o	To be used by children under the age of fourteen. 
 Termination
 •	If this code of conduct is not followed, Microsoft reserves the right, at its sole discretion and without any obligation to do so, 
-o	to review and block client apps from submitting requests to VM Hub 
-o	to review and remove service endpoints from their connection to the VM Hub
+o	to review and block client apps from submitting requests to Prajna Vision 
+o	to review and remove service endpoints from their connection to the Prajna Vision
 Further Information
 <<link to Privacy Statement>>
 <<link to Online Services Agreement>>

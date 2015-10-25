@@ -147,7 +147,7 @@
             </Button.Flyout>
 
         </Button>
-        <HyperlinkButton x:Name="VMHub" Margin="{StaticResource AutoSuggestListViewItemMargin}" Content="Powered by Microsoft VM Hub" HorizontalAlignment="Left" VerticalAlignment="Center" NavigateUri="http://vm-hub.trafficmanager.net/web/info.html" Style="{StaticResource HyperlinkButtonStyle1}"/>
+        <HyperlinkButton x:Name="VMHub" Margin="{StaticResource AutoSuggestListViewItemMargin}" Content="Powered by Microsoft Prajna Vision" HorizontalAlignment="Left" VerticalAlignment="Center" NavigateUri="http://vm-hub.trafficmanager.net/web/info.html" Style="{StaticResource HyperlinkButtonStyle1}"/>
         <HyperlinkButton x:Name="PrivacyPolicy" Content="Privacy Policy"  Grid.Row="2" HorizontalAlignment="Right" HorizontalContentAlignment="Left" VerticalAlignment="Center" NavigateUri="http://go.microsoft.com/fwlink/?LinkId=521839 " Style="{StaticResource HyperlinkButtonStyle1}" Margin="0,16.333,10,17" Width="98" />
      <!-- Uncomment this button to test the styling of the error page -->
       <!--<Button Content="TestErrorPage" Grid.Row="2" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Click="goToErrorPage"/> -->

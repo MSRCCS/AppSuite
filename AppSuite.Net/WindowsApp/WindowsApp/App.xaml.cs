@@ -25,8 +25,8 @@ using Windows.Storage.Streams;
 using System.Threading.Tasks;
 using System.Threading;
 using Windows.Phone.UI.Input;
-using VMHub.Data;
-using VMHubClientLibrary;
+using Prajna.Services.Vision.Data;
+using Prajna.AppLibrary;
 using WindowsApp.Views;
 
 

@@ -1,12 +1,12 @@
 ﻿As a app developer, please respect user privacy, you must agree and follow below requirements:
-Your moble app links to service endpoints via the Microsoft VM Hub Gateway. To report abuse of the VM Hub Gateway to Microsoft, please visit http://vm-hub.trafficmanager.net/web/info.html to contact Microsoft.
+Your moble app links to service endpoints via the Microsoft Prajna Vision Gateway. To report abuse of the Prajna Vision Gateway to Microsoft, please visit http://vm-hub.trafficmanager.net/web/info.html to contact Microsoft.
 
 Privacy policy
 	A prominent link in the app’s menu to a privacy policy
 		You can use this forward link to the Standard Microsoft Research privacy policy: http://go.microsoft.com/fwlink/?LinkID=286687 
 Attribution
 	A splash screen at app startup time that says something like
-		“Powered by Microsoft VM Hub” with a link to the primary landing webpage for the VHub product: http://vm-hub.trafficmanager.net/web/info.html
+		“Powered by Microsoft Prajna Vision” with a link to the primary landing webpage for the VHub product: http://vm-hub.trafficmanager.net/web/info.html
 First run notice
 	Let users know that the images they submit could be kept by the service provider for up to 1 year.
 Consent
