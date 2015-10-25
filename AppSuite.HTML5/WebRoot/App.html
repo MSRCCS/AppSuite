@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title>Prajna Vision</title>
+    <link rel="stylesheet" href="MobileStyle.css" type="text/css" />
+    <link rel="stylesheet" href="jquery.Jcrop.min.css" type="text/css" />
+    <script src="jquery.min.js"></script>
+    <script src="jquery.Jcrop.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script> 
+    <script src="exif.js"></script>
+    <script src="binaryajax.js"></script>
+    <script src="prajna.client.js"></script>
+</head>
+<body>
+<h1>Prajna Visual Recognition</h1>
+<div id="recognizer">
+    <label for="recognizerList"><b>Recognizer: </b></label>
+    <select id="recognizerList"></select>
+</div>
+<br><br><br><br>
+<button class="selectionBtn" onclick="$('#fileInput').trigger('click')"> Take/Choose a photo </button>
+<br>
+<hr/>
+<form id="file_form">
+    <input type="file" id="fileInput" onchange="displayImage(this);" style="display: none;">
+</form>
+<div id="centerDiv" class="toCenter">
+    <img id="imageArea"/>
+</div>
+<br>
+<canvas id="resultCanvas" class="toCenter">
+Your browser does not support the HTML5 canvas tag. Please try on another browser.</canvas>        
+
+<canvas id="cropCanvas" style="border:1px solid #d3d3d3;background:#ffffff;">
+Your browser does not support the HTML5 canvas tag. Please try on another browser.</canvas>
+
+<img id="spinner" src="spinner.gif"/>
+<br />
+<div id="result" class="toCenter"></div>
+<hr/>
+<footer class="toCenter">&copy; 2015 - Powered by Microsoft Prajna Hub</footer>
+<script src="MyScript.js"></script>
+</body>
+</html>

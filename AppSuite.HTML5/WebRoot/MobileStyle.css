@@ -1,0 +1,116 @@
+.ToCenter
+{
+    display:block;
+    width:90%;
+    margin:auto;
+}
+#centerDiv
+{
+    width:0;
+    display:none;
+    border:1px solid #000;
+}
+h1
+{
+    font-size: xx-large;
+    float: left;
+    margin: auto;
+    margin-left: 5%;
+}
+h2 { font-size: 35; }
+hr
+{
+    color: lightgray;
+    background-color: lightgray;
+    width: 90% 
+}
+#recognizer
+{
+    font-size: larger;
+    float: right;
+    vertical-align: auto;
+    margin-top: 10pt;
+    margin-right: 5%;
+}
+select#recognizerList {
+    font-family: "Times New Roman";
+    font-size: large;
+}
+.selectionBtn
+{
+    padding:5;
+    font-size:2em;
+    display: block;
+    width:80%;
+    margin:auto
+}
+
+#cropCanvas
+{
+    display:none;
+    margin:auto;
+}
+#resultCanvas
+{
+    width: 600;
+    height: auto;
+    
+}
+#spinner
+{
+    display:none;
+    margin:auto;
+}
+
+#testArea
+{
+    display:none;
+}
+
+#centerDiv img
+{
+	width: auto!important;
+	  height: auto!important;
+display: block;
+    margin-left: auto!important;
+    margin-right: auto!important;
+position: static!important;
+}
+
+img#imageArea
+{
+  width: 0px!important;
+  height: 0px!important;
+}
+
+table form, table, #result
+{
+font-size: 30px;
+text-align: center
+}
+table h4
+{
+  font-size: 35px;
+}
+table img
+{
+    height: 120;
+}
+fieldset
+{
+  border: 1px dashed rgb(74, 0, 255);
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+}
+
+#centerDiv, .jcrop-holder
+{
+width: auto!important;
+height: auto!important;
+}
+
+/* #result a
+{
+	font-size: 16px;
+}
+ */
