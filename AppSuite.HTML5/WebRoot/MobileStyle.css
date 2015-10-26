@@ -1,3 +1,18 @@
+html{font-size:100%;} 
+@media(max-width:60em){html{font-size: 70%}}
+
+#container
+{
+    width: 70%;
+    margin: 0px auto;
+}
+@media(max-width:60em)
+{
+    #container
+    {
+        width: 100%;   
+    }
+}
 .ToCenter
 {
     display:block;
@@ -12,12 +27,12 @@
 }
 h1
 {
-    font-size: xx-large;
+    font-size: 2em;
     float: left;
     margin: auto;
     margin-left: 5%;
 }
-h2 { font-size: 35; }
+h2 { font-size: 1.5em; }
 hr
 {
     color: lightgray;
@@ -26,20 +41,20 @@ hr
 }
 #recognizer
 {
-    font-size: larger;
+    font-size: 1.5em;
     float: right;
     vertical-align: auto;
-    margin-top: 10pt;
+    margin-top: 0.4em;
     margin-right: 5%;
 }
 select#recognizerList {
     font-family: "Times New Roman";
-    font-size: large;
+    font-size: 0.8em;
 }
 .selectionBtn
 {
     padding:5;
-    font-size:2em;
+    font-size:1.5em;
     display: block;
     width:80%;
     margin:auto
@@ -52,9 +67,9 @@ select#recognizerList {
 }
 #resultCanvas
 {
-    width: 600;
+    max-width: 70%;
+    width: 500;
     height: auto;
-    
 }
 #spinner
 {
@@ -85,12 +100,12 @@ img#imageArea
 
 table form, table, #result
 {
-font-size: 30px;
+font-size: 1.2em;
 text-align: center
 }
 table h4
 {
-  font-size: 35px;
+  font-size: 1.2em;
 }
 table img
 {
