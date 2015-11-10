@@ -71,10 +71,11 @@ select#recognizerList {
     width: 500;
     height: auto;
 }
+
 #spinner
 {
-    display:none;
-    margin:auto;
+    display: block;
+    margin: auto;
 }
 
 #testArea
