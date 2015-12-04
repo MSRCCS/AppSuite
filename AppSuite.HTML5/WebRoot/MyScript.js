@@ -1,8 +1,8 @@
 (function()
 {
     $('#findSimilar').hide();
-    var maxWidth = 600;
-    var maxHeight = 600;
+    var maxWidth = 1200;
+    var maxHeight = 1200;
     var cookieName = "PrajnaHub";
     var cookie = readCookie(cookieName);
     var prajnaClient = new PrajnaClient("vm-hub.trafficmanager.net", EmptyGUID, "SecretKeyShouldbeLongerThan10");
@@ -70,54 +70,59 @@
                 c.height = srcHeight/ratio;
             }
             ctx.drawImage(img, 0, 0, srcWidth, srcHeight, 0, 0, srcWidth/ratio, srcHeight/ratio);
-            callBack(c.toDataURL());
+            callBack(c.toDataURL('image/jpeg', 0.9));
         };
         img.src = imgDataUrl;
     }
     
+    function recognizeImage(imageDataUrl)
+    {
+        var c=document.getElementById("resultCanvas");
+        var ctx=c.getContext("2d");
+        var img = new Image();
+        img.onload = function() {
+            ratio = getScalingRatio(img.width, img.height);
+            c.width = img.width/ratio;
+            c.height = img.height/ratio;
+            ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, c.width, c.height)
+            $("#spinner").show();
+        };
+        img.src = imageDataUrl;
+        
+        var selectedRecognizer = $("#recognizerList").val();
+        var reqString = prajnaClient.FormReqServiceString(EmptyGUID, EmptyGUID, selectedRecognizer, EmptyGUID, EmptyGUID);
+        // "d6297090-d72c-9507-2bf4-d2dfcfc67b61", EmptyGUID, EmptyGUID)
+        var reqUrl = prajnaClient.FormServiceURL(reqString);
+        $.ajax({
+            type: "POST",
+            url: reqUrl,
+            contentType: false,
+            processData: false,
+            data: dataURLToBlob2(imageDataUrl)
+        })
+        .done(function (responseData) {
+            console.log(JSON.stringify(responseData));
+            getRequestCallBack(responseData);
+        })
+        .fail(function (jqXHR, textStatus) {
+            $("#result").html("Request failed. Please check the status of vm-hub server.");
+        });
+    }
+                
     function displayImage(input) {
         $("#result").hide();
-        var selectedRecognizer = $("#recognizerList").val();
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
                 // For IOS
-                rotateImageToRightDirection(e.target.result, function(rotatedDataUrl){
-                    var c=document.getElementById("resultCanvas");
-                    var ctx=c.getContext("2d");
-                    var img = new Image();
-                    img.onload = function() {
-                        ratio = getScalingRatio(img.width, img.height);
-                        c.width = img.width/ratio;
-                        c.height = img.height/ratio;
-                        ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, c.width, c.height)
-                    };
-                    img.src = rotatedDataUrl;
-                    
-                    var reqString = prajnaClient.FormReqServiceString(EmptyGUID, EmptyGUID, selectedRecognizer, EmptyGUID, EmptyGUID);
-                    // "d6297090-d72c-9507-2bf4-d2dfcfc67b61", EmptyGUID, EmptyGUID)
-                    var reqUrl = prajnaClient.FormServiceURL(reqString);
-                    $.ajax({
-                       type: "POST",
-                       url: reqUrl,
-                       contentType: false,
-                       processData: false,
-                       data: dataURLToBlob2(rotatedDataUrl)
-                    })
-                    .done(function (responseData) {
-                       console.log(JSON.stringify(responseData));
-                       getRequestCallBack(responseData);
-                    })
-                    .fail(function (jqXHR, textStatus) {
-                        $("#result").html("Request failed. Please check the status of vm-hub server.");
-                    });
-                });
+                rotateImageToRightDirection(e.target.result, recognizeImage);
             }
             reader.readAsDataURL(input.files[0]);
                         
         }
         $("#cropCanvas").hide();
     }
+    
     
 	function dataURLToBlob2(dataURL) {
 		var BASE64_MARKER = ';base64,';
@@ -143,7 +148,7 @@
 	}
 	function showFaceRecognition(results)
     {
-        if (results.length == 0)
+        if (results.length === 0)
         {
             $("#result").html("No face detected.");
         }
@@ -152,32 +157,38 @@
             var resultstr = '';
             resultstr += '<h2>Recognition Result</h2>';
             resultstr += '<table>';
+            resultstr += '<th></th><th>EntityImage</th><th>EntityName</th><th>Confidence</th>';
 
             var canvas = document.getElementById('resultCanvas');
             var ctx =  canvas.getContext("2d");
             ctx.strokeStyle = "yellow"
-            ctx.font = "Arial 16px"
+            ctx.lineWidth = 2;
+            ctx.font = "1.5em Arial"
             
 			var resultcnt = 0;
 			for (var r in results)
 			{
-				var recogResult = results[r]['CategoryResult']
-				var result_name = recogResult[0]['CategoryName'];
-				var result_id = recogResult[0]['AuxResult'].split('\t')[0];
-				var result_Image = recogResult[0]['AuxResult'].split('\t')[1];
-				var result_conf = recogResult[0]['Confidence'] * 100;
-				var rc = results[r]['Rect'];
+                var rc = results[r]['Rect'];
+                ctx.strokeRect(rc.X, rc.Y, rc.Width, rc.Height);
 
-				ctx.strokeRect(rc.X, rc.Y, rc.Width, rc.Height);
-                ctx.strokeText(result_name, rc.X, rc.Y + rc.Height + 18);
-				
-				resultstr += '<th></th><th>EntityImage</th><th>EntityName</th><th>Confidence</th>';
-				resultstr += '<tr>';
-				resultstr += '<td>Face' + resultcnt + '</td>';
-				resultstr += '<td><img src="' + result_Image + '"/></td>';
-				resultstr += '<td><a href="http://knowledge.microsoft.com/' + result_id + '">' + result_name + '</a></td>';
-				resultstr += '<td>' + result_conf.toFixed(1) + '%</td>';
-				resultstr += '</tr>';
+                var recogResult = results[r]['CategoryResult']
+				if (recogResult.length > 0)
+				{
+    				var result_name = recogResult[0]['CategoryName'];
+    				var result_id = recogResult[0]['AuxResult'].split('\t')[0];
+    				var result_Image = recogResult[0]['AuxResult'].split('\t')[1];
+    				var result_conf = recogResult[0]['Confidence'] * 100;
+                    ctx.strokeText(result_name, rc.X, rc.Y + rc.Height + 18);
+    
+    				resultstr += '<tr>';
+    				resultstr += '<td>Face' + resultcnt + '</td>';
+    				resultstr += '<td><img src="' + result_Image + '"/></td>';
+    				resultstr += '<td><a href="http://knowledge.microsoft.com/' + result_id + '">' + result_name + '</a></td>';
+    				resultstr += '<td>' + result_conf.toFixed(1) + '%</td>';
+    				resultstr += '</tr>';
+                }
+                else
+                    ctx.strokeText("?", rc.X, rc.Y + rc.Height + 25);
 
 				resultcnt += 1;
 			}
@@ -236,6 +247,7 @@
         createCookie(cookieName, selectedRecognizer, 30);
     });
     
+    $("#spinner").hide();
     window.displayImage = displayImage;
     
 	prajnaClient.GetActiveClassifiers(function(classifiers){
