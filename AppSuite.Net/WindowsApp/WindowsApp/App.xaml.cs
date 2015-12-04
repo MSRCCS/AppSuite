@@ -41,7 +41,7 @@ namespace WindowsApp
     public sealed partial class App : Application
     {
         private TransitionCollection transitions;
-        internal static String DefaultGateway = "vhub.trafficmanager.net"; // "vhub.trafficmanager.net"; 
+        internal static String DefaultGateway = "vm-hub.trafficmanager.net"; // "vhub.trafficmanager.net"; 
         internal static Guid CustomerID = Guid.Empty;
         internal static String CustomerKey = "SecretKeyUsed";
 
