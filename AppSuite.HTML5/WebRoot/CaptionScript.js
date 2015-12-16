@@ -4,7 +4,7 @@
     var maxWidth = 1200;
     var maxHeight = 1200;
     var prajnaClient = new PrajnaClient("vm-hub.trafficmanager.net", EmptyGUID, "SecretKeyShouldbeLongerThan10");
-    var captionGUID = "c03f7af8-b8ed-3c0e-bb6b-d38cc72f7260";
+    var captionGUID = "62df0f0c-f71a-6f07-378b-ea118306dcb8";
 
     function getScalingRatio(width, height)
     {
