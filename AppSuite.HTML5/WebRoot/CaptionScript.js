@@ -3,8 +3,28 @@
     $('#findSimilar').hide();
     var maxWidth = 1200;
     var maxHeight = 1200;
-    var prajnaClient = new PrajnaClient("vm-hub.trafficmanager.net", EmptyGUID, "SecretKeyShouldbeLongerThan10");
-    var captionGUID = "c03f7af8-b8ed-3c0e-bb6b-d38cc72f7260";
+
+    var urlParams = getUrlParams(window.location);
+    var gateway = urlParams.gateway ? urlParams.gateway : window.location.hostname;
+    var prajnaClient = new PrajnaClient(gateway, EmptyGUID, "SecretKeyShouldbeLongerThan10");
+    var serviceGUID = urlParams.serviceguid ? urlParams.serviceguid : "c03f7af8-b8ed-3c0e-bb6b-d38cc72f7260";
+
+    function getUrlParams(url)
+    {
+        var params = {};
+        
+        if (location.search) {
+            var parts = url.search.substring(1).split('&');
+        
+            for (var i = 0; i < parts.length; i++) {
+                var nv = parts[i].split('=');
+                if (!nv[0]) continue;
+                params[nv[0].toLowerCase()] = nv[1] || true;
+            }
+        }
+        
+        return params;
+    }
 
     function getScalingRatio(width, height)
     {
@@ -88,7 +108,7 @@
         };
         img.src = imageDataUrl;
         
-        var reqString = prajnaClient.FormReqServiceString(EmptyGUID, EmptyGUID, captionGUID, EmptyGUID, EmptyGUID);
+        var reqString = prajnaClient.FormReqServiceString(EmptyGUID, EmptyGUID, serviceGUID, EmptyGUID, EmptyGUID);
         // "d6297090-d72c-9507-2bf4-d2dfcfc67b61", EmptyGUID, EmptyGUID)
         var reqUrl = prajnaClient.FormServiceURL(reqString);
         $.ajax({
