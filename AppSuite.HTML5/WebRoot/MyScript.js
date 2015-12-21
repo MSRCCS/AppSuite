@@ -5,8 +5,28 @@
     var maxHeight = 1200;
     var cookieName = "PrajnaHub";
     var cookie = readCookie(cookieName);
-    var prajnaClient = new PrajnaClient("vm-hub.trafficmanager.net", EmptyGUID, "SecretKeyShouldbeLongerThan10");
 
+    var urlParams = getUrlParams(window.location);
+    var gateway = urlParams.gateway ? urlParams.gateway : window.location.hostname;
+    var prajnaClient = new PrajnaClient(gateway, EmptyGUID, "SecretKeyShouldbeLongerThan10");
+
+    function getUrlParams(url)
+    {
+        var params = {};
+        
+        if (location.search) {
+            var parts = url.search.substring(1).split('&');
+        
+            for (var i = 0; i < parts.length; i++) {
+                var nv = parts[i].split('=');
+                if (!nv[0]) continue;
+                params[nv[0].toLowerCase()] = nv[1] || true;
+            }
+        }
+        
+        return params;
+    }
+    
     function getScalingRatio(width, height)
     {
         var ratio = width / maxWidth;
